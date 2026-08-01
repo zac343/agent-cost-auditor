@@ -1,0 +1,16 @@
+{
+  "name": "agent-cost-auditor",
+  "version": "0.1.0",
+  "description": "Browser-local AI agent cost audit core",
+  "type": "module",
+  "exports": "./src/auditor.mjs",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zac343/agent-cost-auditor.git"
+  }
+}
