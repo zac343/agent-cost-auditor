@@ -1,16 +1,41 @@
 {
   "name": "agent-cost-auditor",
-  "version": "0.1.0",
-  "description": "Browser-local AI agent cost audit core",
+  "version": "0.2.0",
+  "description": "Local AI agent cost audit for retries, fallback, cache misses, failed spend, and hidden usage",
   "type": "module",
+  "bin": {
+    "agent-cost-audit": "./bin/agent-cost-audit.mjs"
+  },
   "exports": "./src/auditor.mjs",
+  "files": [
+    "bin",
+    "src",
+    "LICENSE",
+    "README.md",
+    "SOURCE_SHA256"
+  ],
   "scripts": {
     "test": "node --test"
   },
+  "keywords": [
+    "ai-agent",
+    "llm",
+    "cost-audit",
+    "codex",
+    "claude-code",
+    "openclaw",
+    "finops"
+  ],
   "license": "MIT",
-  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://mailcheck.agentcartai.com/tools/agent-cost-auditor/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zac343/agent-cost-auditor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zac343/agent-cost-auditor/issues"
   }
 }

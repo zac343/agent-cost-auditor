@@ -4,6 +4,28 @@ A browser-local audit core for finding expensive AI-agent behavior in real usage
 
 Production tool: https://mailcheck.agentcartai.com/tools/agent-cost-auditor/
 
+## Run locally now
+
+No checkout, account, API key, or package-registry publish is required. Node.js 20 or newer can run the repository directly through GitHub:
+
+```bash
+npx --yes github:zac343/agent-cost-auditor ./usage.jsonl
+```
+
+Audit the newest compatible Codex rollouts in a sessions directory, optionally centered on one session ID or filename:
+
+```bash
+npx --yes github:zac343/agent-cost-auditor ~/.codex/sessions --session SESSION_ID
+```
+
+Piped JSON, JSONL, or CSV is also accepted:
+
+```bash
+cat usage.json | npx --yes github:zac343/agent-cost-auditor --format json -
+```
+
+Add `--json` for a machine-readable audit and verdict. The CLI performs no network requests and prints the production evidence-pack URL only as an optional next step.
+
 ## What it detects
 
 - replayed Codex rollout prefixes and blocking-poll usage
@@ -45,6 +67,20 @@ console.log(verdict);
 
 The production module also contains UI, checkout, and delivery integration. Import only the named functions you need.
 
+## CLI options
+
+```text
+agent-cost-audit [options] <file-or-directory...>
+
+--session <id>   Center a directory scan on a Codex session ID or filename
+--format <type>  Set piped input to json, jsonl, or csv
+--json           Print the complete local audit and verdict as JSON
+--help           Show command help
+--version        Show the package version
+```
+
+Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks, and selects at most 200 files within the same 2 GB local streaming boundary as the production tool. Piped and other non-streaming exports retain the 10 MB limit.
+
 ## Verification
 
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
@@ -60,5 +96,3 @@ This tool reports evidence present in supplied usage records. A missing field is
 ## License
 
 MIT. See [LICENSE](LICENSE).
-# agent-cost-auditor
-Browser-local AI agent cost audit core. Detect duplicate retries, fallback storms, cache misses, and wasted paid requests without uploading raw logs.
