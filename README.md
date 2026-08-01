@@ -9,19 +9,19 @@ Production tool: https://mailcheck.agentcartai.com/tools/agent-cost-auditor/
 No checkout, account, API key, or package-registry publish is required. Node.js 20 or newer can run the repository directly through GitHub:
 
 ```bash
-npx --yes github:zac343/agent-cost-auditor ./usage.jsonl
+npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit ./usage.jsonl
 ```
 
 Audit the newest compatible Codex rollouts in a sessions directory, optionally centered on one session ID or filename:
 
 ```bash
-npx --yes github:zac343/agent-cost-auditor ~/.codex/sessions --session SESSION_ID
+npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit ~/.codex/sessions --session SESSION_ID
 ```
 
 Piped JSON, JSONL, or CSV is also accepted:
 
 ```bash
-cat usage.json | npx --yes github:zac343/agent-cost-auditor --format json -
+cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit --format json -
 ```
 
 Add `--json` for a machine-readable audit and verdict. The CLI performs no network requests and prints the production evidence-pack URL only as an optional next step.
