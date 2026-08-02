@@ -2,6 +2,7 @@
 
 import { createReadStream } from "node:fs";
 import { lstat, readFile, readdir, stat } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import { Readable } from "node:stream";
 
@@ -14,6 +15,20 @@ import {
 
 const MAX_STDIN_BYTES = 10 * 1024 * 1024;
 const MAX_DISCOVERED_FILES = 10_000;
+const AUTO_INPUTS = Object.freeze({
+  codex: {
+    label: "Codex",
+    pathSegments: [".codex", "sessions"]
+  },
+  "claude-code": {
+    label: "Claude Code",
+    pathSegments: [".claude", "projects"]
+  },
+  openclaw: {
+    label: "OpenClaw",
+    pathSegments: [".openclaw", "agents"]
+  }
+});
 const EVIDENCE_PACK_URL = "https://mailcheck.agentcartai.com/tools/agent-cost-auditor/"
   + "?utm_source=github&utm_medium=cli&utm_campaign=agent-cost-auditor";
 const packageJson = JSON.parse(
@@ -24,10 +39,12 @@ function helpText() {
   return `Agent Cost Auditor ${packageJson.version}
 
 Usage:
+  agent-cost-audit --auto <codex|claude-code|openclaw>
   agent-cost-audit [options] <file-or-directory...>
   cat usage.jsonl | agent-cost-audit [--format jsonl] -
 
 Options:
+  --auto <app>     Find that app's standard local usage directory automatically
   --session <id>   Center a directory scan on a Codex session ID or filename
   --format <type>  Set piped input to json, jsonl, or csv
   --json           Print the complete local audit and verdict as JSON
@@ -39,6 +56,7 @@ All parsing stays in this process. The CLI performs no network requests.`;
 
 function parseArguments(argv) {
   const options = {
+    auto: null,
     format: null,
     help: false,
     json: false,
@@ -61,12 +79,13 @@ function parseArguments(argv) {
       options.json = true;
       continue;
     }
-    if (argument === "--session" || argument === "--format") {
+    if (argument === "--auto" || argument === "--session" || argument === "--format") {
       const value = argv[index + 1];
       if (!value || value.startsWith("-")) {
         throw new Error(`${argument} requires a value.`);
       }
       index += 1;
+      if (argument === "--auto") options.auto = value.trim().toLowerCase();
       if (argument === "--session") options.session = value.trim();
       if (argument === "--format") options.format = value.toLowerCase();
       continue;
@@ -80,7 +99,15 @@ function parseArguments(argv) {
   if (options.format && !["json", "jsonl", "csv"].includes(options.format)) {
     throw new Error("--format must be json, jsonl, or csv.");
   }
+  if (options.auto && !AUTO_INPUTS[options.auto]) {
+    throw new Error("--auto must be codex, claude-code, or openclaw.");
+  }
   return options;
+}
+
+function autoInputPath(platform) {
+  const definition = AUTO_INPUTS[platform];
+  return path.join(os.homedir(), ...definition.pathSegments);
 }
 
 function nodeFile(filePath, fileStat, root = null) {
@@ -210,13 +237,16 @@ async function main() {
     return;
   }
 
-  const stdinRequested = options.inputs.includes("-") || (
-    options.inputs.length === 0 && !process.stdin.isTTY
+  if (options.auto && options.inputs.length) {
+    throw new Error("--auto cannot be combined with file, directory, or stdin inputs.");
+  }
+  const stdinRequested = !options.auto && (
+    options.inputs.includes("-") || (options.inputs.length === 0 && !process.stdin.isTTY)
   );
   if (stdinRequested && options.inputs.some((input) => input !== "-")) {
     throw new Error("Piped input cannot be combined with file or directory inputs.");
   }
-  if (!stdinRequested && !options.inputs.length) {
+  if (!stdinRequested && !options.auto && !options.inputs.length) {
     throw new Error(`Choose a file or directory.\n\n${helpText()}`);
   }
   if (options.format && !stdinRequested) {
@@ -225,13 +255,20 @@ async function main() {
   if (options.session && stdinRequested) {
     throw new Error("--session requires a sessions directory.");
   }
+  if (options.session && options.auto && options.auto !== "codex") {
+    throw new Error("--session can be combined only with --auto codex.");
+  }
+
+  const resolvedInputs = options.auto
+    ? [autoInputPath(options.auto)]
+    : options.inputs;
 
   const audit = stdinRequested
     ? parseCostUsageText(await readStdin(), {
       fileName: options.format ? `stdin.${options.format}` : "",
       format: options.format || undefined
     })
-    : await parseCostUsageFiles(await resolveFiles(options.inputs, options.session));
+    : await parseCostUsageFiles(await resolveFiles(resolvedInputs, options.session));
   const verdict = buildAuditVerdict(audit);
   if (options.json) {
     process.stdout.write(`${JSON.stringify({

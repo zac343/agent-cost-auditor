@@ -3233,6 +3233,30 @@ export function buildAuditVerdict(audit) {
   };
 }
 
+export function buildFreeSupportSummary(audit, verdict = buildAuditVerdict(audit)) {
+  if (!audit || typeof audit !== "object" || !audit.summary) {
+    throw new Error("A completed local audit is required.");
+  }
+  const findings = findingRows(audit);
+  const signals = findings.length
+    ? findings.slice(0, 3).map(([, title, records]) => `${title} (${number(records)})`).join("; ")
+    : t("No supported anomaly pattern detected", "未发现当前支持的异常消耗模式");
+  return [
+    t("AI usage incident summary", "AI 用量故障摘要"),
+    `${t("Finding", "结论")}: ${verdict.title}`,
+    t(
+      `Evidence: ${number(audit.recordCount)} records checked; ${money(audit.summary.totalCostUsd)} recorded cost; ${money(audit.summary.failedCostUsd)} failed-call cost; ${number(audit.summary.unpricedRecords)} unpriced records.`,
+      `证据：已检查 ${number(audit.recordCount)} 条记录；已记录费用 ${money(audit.summary.totalCostUsd)}；失败调用费用 ${money(audit.summary.failedCostUsd)}；${number(audit.summary.unpricedRecords)} 条无法计价。`
+    ),
+    `${t("Signals", "异常信号")}: ${signals}`,
+    `${t("Next action", "下一步")}: ${verdict.detail}`,
+    t(
+      "Privacy: generated locally; no raw logs, prompts, messages, or credentials are included.",
+      "隐私：摘要在本机生成，不包含原始日志、提示词、消息或凭据。"
+    )
+  ].join("\n");
+}
+
 export function buildClearedAuditLocation(value) {
   const url = new URL(String(value || ""), "https://mailcheck.agentcartai.com");
   url.searchParams.delete("session");
@@ -3310,6 +3334,7 @@ export function resetAuditUi(root) {
   hide("audit-results", true);
   hide("checkout-section", true);
   hide("sample-next-step", true);
+  hide("free-support-summary", true);
   hide("finding-count", true);
   hide("group-section", true);
 
@@ -3327,6 +3352,7 @@ export function resetAuditUi(root) {
   text("metric-failed", "$0");
   text("metric-reasoning", "0");
   text("metric-recurring", t("None", "未发现"));
+  text("free-summary-status", "");
 
   empty("finding-list");
   empty("group-table-body");
@@ -3345,6 +3371,7 @@ function renderLocalAudit(
   setHidden("audit-results", false);
   setHidden("checkout-section", !allowCheckout);
   setHidden("sample-next-step", !promptOwnData);
+  setHidden("free-support-summary", !allowCheckout);
   setHidden("group-section", false);
   setText("metric-records", number(audit.recordCount));
   setText("metric-cost", money(audit.summary.totalCostUsd));
@@ -3829,6 +3856,8 @@ function initializeTool() {
   const quickExampleButton = document.getElementById("quick-example-button");
   const useOwnDataButton = document.getElementById("use-own-data-button");
   const checkoutButton = document.getElementById("checkout-button");
+  const freeSummaryButton = document.getElementById("copy-free-support-summary");
+  const freeSummaryStatus = document.getElementById("free-summary-status");
   let currentAudit = null;
   let currentAuditCanCheckout = false;
   let syntheticSampleText = "";
@@ -4193,6 +4222,31 @@ function initializeTool() {
     resetAuditUi(document);
     error.hidden = true;
     history.replaceState(null, "", buildClearedAuditLocation(window.location.href));
+  });
+
+  freeSummaryButton.addEventListener("click", async () => {
+    if (!currentAudit || !currentAuditCanCheckout || freeSummaryButton.disabled) return;
+    const original = freeSummaryButton.textContent;
+    freeSummaryButton.disabled = true;
+    freeSummaryStatus.textContent = "";
+    try {
+      await navigator.clipboard.writeText(buildFreeSupportSummary(currentAudit));
+      freeSummaryButton.textContent = t("Copied", "已复制");
+      freeSummaryStatus.textContent = t(
+        "Ready to paste into a support ticket or team message.",
+        "可以直接粘贴到客服工单或团队消息中。"
+      );
+    } catch {
+      freeSummaryStatus.textContent = t(
+        "Clipboard access is unavailable in this browser.",
+        "当前浏览器无法使用剪贴板。"
+      );
+    } finally {
+      setTimeout(() => {
+        freeSummaryButton.textContent = original;
+        freeSummaryButton.disabled = false;
+      }, 1200);
+    }
   });
 
   checkoutButton.addEventListener("click", async () => {

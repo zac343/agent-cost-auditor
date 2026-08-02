@@ -7,6 +7,7 @@ import test from "node:test";
 
 import {
   buildAuditVerdict,
+  buildFreeSupportSummary,
   parseCostUsageText
 } from "../src/auditor.mjs";
 
@@ -25,6 +26,26 @@ test("flags priced failed work without requiring a browser", () => {
   assert.equal(audit.summary.failedOrCancelledRecords, 1);
   assert.equal(audit.summary.failedCostUsd, 0.01);
   assert.match(buildAuditVerdict(audit).title, /Failed work/);
+});
+
+test("builds a locally shareable free summary without raw record content", () => {
+  const audit = parseCostUsageText(JSON.stringify({
+    provider: "openai",
+    model: "private-model-name",
+    agent_id: "private-agent-name",
+    feature: "private-feature-name",
+    status: "failed",
+    usage: { input_tokens: 1000, output_tokens: 10 },
+    cost_usd: 0.01,
+    message: "PRIVATE MESSAGE"
+  }));
+  const summary = buildFreeSupportSummary(audit);
+
+  assert.match(summary, /AI usage incident summary/);
+  assert.match(summary, /Evidence: 1 records checked/);
+  assert.match(summary, /\$0\.0100 failed-call cost/);
+  assert.match(summary, /Privacy: generated locally/);
+  assert.doesNotMatch(summary, /private-agent-name|private-feature-name|private-model-name|PRIVATE MESSAGE/);
 });
 
 test("parses an OpenCode sanitized export without double-counting its session total", () => {
@@ -221,6 +242,62 @@ test("discovers a requested Codex rollout inside a sessions directory", async (t
   assert.equal(output.audit.recordCount, 1);
   assert.equal(output.audit.summary.inputTokens, 1000);
   assert.equal(output.audit.summary.cachedTokens, 200);
+});
+
+test("auto-discovers the standard Codex, Claude Code, and OpenClaw directories", async (t) => {
+  const home = await mkdtemp(path.join(os.tmpdir(), "agent-cost-auditor-home-"));
+  t.after(() => rm(home, { recursive: true, force: true }));
+  const fixtures = [
+    ["codex", path.join(home, ".codex", "sessions", "2026", "08", "02", "rollout.jsonl")],
+    ["claude-code", path.join(home, ".claude", "projects", "project", "session.jsonl")],
+    ["openclaw", path.join(home, ".openclaw", "agents", "main", "sessions", "session.jsonl")]
+  ];
+
+  for (const [, fixture] of fixtures) {
+    await mkdir(path.dirname(fixture), { recursive: true });
+    await writeFile(fixture, failedUsage, "utf8");
+  }
+
+  for (const [platform] of fixtures) {
+    const result = spawnSync(
+      process.execPath,
+      [cliPath.pathname, "--json", "--auto", platform],
+      {
+        encoding: "utf8",
+        env: { ...process.env, HOME: home }
+      }
+    );
+    assert.equal(result.status, 0, `${platform}: ${result.stderr}`);
+    const output = JSON.parse(result.stdout);
+    assert.equal(output.audit.summary.failedOrCancelledRecords, 1, platform);
+    assert.equal(output.audit.summary.failedCostUsd, 0.01, platform);
+  }
+});
+
+test("auto-discovery rejects unsupported apps and incompatible argument combinations", () => {
+  const unsupported = spawnSync(
+    process.execPath,
+    [cliPath.pathname, "--auto", "gemini"],
+    { encoding: "utf8" }
+  );
+  assert.notEqual(unsupported.status, 0);
+  assert.match(unsupported.stderr, /--auto must be codex, claude-code, or openclaw/);
+
+  const combined = spawnSync(
+    process.execPath,
+    [cliPath.pathname, "--auto", "codex", "usage.jsonl"],
+    { encoding: "utf8" }
+  );
+  assert.notEqual(combined.status, 0);
+  assert.match(combined.stderr, /--auto cannot be combined/);
+
+  const wrongSessionPlatform = spawnSync(
+    process.execPath,
+    [cliPath.pathname, "--auto", "openclaw", "--session", "abc123"],
+    { encoding: "utf8" }
+  );
+  assert.notEqual(wrongSessionPlatform.status, 0);
+  assert.match(wrongSessionPlatform.stderr, /--session can be combined only with --auto codex/);
 });
 
 test("fails closed on unsupported options", () => {

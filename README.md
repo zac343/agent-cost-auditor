@@ -4,7 +4,7 @@ Find the AI session, retry, fallback, cache miss, or failed request that consume
 
 ## Fastest path
 
-Open the [browser tool](https://mailcheck.agentcartai.com/tools/agent-cost-auditor/?utm_source=github&utm_medium=repository&utm_campaign=agent-cost-auditor), choose the AI system that lost budget, and select its usage folder or export. The result identifies the highest-cost run and the recorded reason before any checkout.
+Open the [browser tool](https://mailcheck.agentcartai.com/tools/agent-cost-auditor/?utm_source=github&utm_medium=repository&utm_campaign=agent-cost-auditor), choose the AI system that lost budget, and use its automatic local command or select an export. The result identifies the highest-cost run and the recorded reason before any checkout.
 
 No account or API key is required. Codex and Claude Code users can choose their local sessions folder directly; OpenCode, OpenClaw, Gemini, OpenRouter, Vercel AI Gateway, and generic JSON/JSONL/CSV exports are also supported.
 
@@ -12,27 +12,37 @@ No account or API key is required. Codex and Claude Code users can choose their 
 
 No checkout, account, API key, or package-registry publish is required. Node.js 20 or newer can run the repository directly through GitHub:
 
+Automatically find the standard local records for Codex, Claude Code, or OpenClaw:
+
 ```bash
-npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit ./usage.jsonl
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto codex
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto claude-code
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto openclaw
+```
+
+Or audit an explicit export or directory:
+
+```bash
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit ./usage.jsonl
 ```
 
 Audit the newest compatible Codex rollouts in a sessions directory, optionally centered on one session ID or filename:
 
 ```bash
-npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit ~/.codex/sessions --session SESSION_ID
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit ~/.codex/sessions --session SESSION_ID
 ```
 
 Piped JSON, JSONL, or CSV is also accepted:
 
 ```bash
-cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit --format json -
+cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --format json -
 ```
 
 OpenCode can create a transcript-redacted session export while preserving its recorded cost and token fields:
 
 ```bash
 opencode export --sanitize > session.json
-npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit session.json
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit session.json
 ```
 
 Add `--json` for a machine-readable audit and verdict. The CLI performs no network requests and prints the production evidence-pack URL only as an optional next step.
@@ -83,8 +93,10 @@ The production module also contains UI, checkout, and delivery integration. Impo
 ## CLI options
 
 ```text
+agent-cost-audit --auto <codex|claude-code|openclaw>
 agent-cost-audit [options] <file-or-directory...>
 
+--auto <app>     Find that app's standard local usage directory automatically
 --session <id>   Center a directory scan on a Codex session ID or filename
 --format <type>  Set piped input to json, jsonl, or csv
 --json           Print the complete local audit and verdict as JSON
@@ -99,7 +111,7 @@ Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
 
 ```text
-https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=35
+https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=36
 ```
 
 ## Limits
