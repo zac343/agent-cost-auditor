@@ -15,34 +15,34 @@ No checkout, account, API key, or package-registry publish is required. Node.js 
 Automatically find the standard local records for Codex, Claude Code, or OpenClaw:
 
 ```bash
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto codex
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto claude-code
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --auto openclaw
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit --auto codex
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit --auto claude-code
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit --auto openclaw
 ```
 
 Or audit an explicit export or directory:
 
 ```bash
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit ./usage.jsonl
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit ./usage.jsonl
 ```
 
 Audit the newest compatible Codex rollouts in a sessions directory, optionally centered on one session ID or filename:
 
 ```bash
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit ~/.codex/sessions --session SESSION_ID
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit ~/.codex/sessions --session SESSION_ID
 ```
 
 Piped JSON, JSONL, or CSV is also accepted:
 
 ```bash
-cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit --format json -
+cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit --format json -
 ```
 
 OpenCode can create a transcript-redacted session export while preserving its recorded cost and token fields:
 
 ```bash
 opencode export --sanitize > session.json
-npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.0 -- agent-cost-audit session.json
+npm exec --yes --package=github:zac343/agent-cost-auditor#v0.5.1 -- agent-cost-audit session.json
 ```
 
 Add `--json` for a machine-readable audit and verdict. The CLI performs no network requests and prints the production evidence-pack URL only as an optional next step.
@@ -62,7 +62,7 @@ Add `--json` for a machine-readable audit and verdict. The CLI performs no netwo
 
 Parsing and the free audit run in the browser. Raw logs, prompts, messages, API keys, wallet secrets, and credentials are not uploaded. The optional evidence-pack checkout sends only a bounded, aliased summary.
 
-The source in `src/auditor.mjs` is the browser module used by the production tool. Its localization dependency is in `src/locale.mjs`. Review both before selecting any local file.
+The source in `src/auditor.mjs` is the browser module used by the production tool. Its localization and clipboard dependencies are in `src/locale.mjs` and `src/clipboard.mjs`. Review them before selecting any local file.
 
 ## Supported inputs
 
@@ -111,7 +111,7 @@ Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
 
 ```text
-https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=36
+https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=37
 ```
 
 ## Limits

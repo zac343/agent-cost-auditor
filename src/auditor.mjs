@@ -1,4 +1,5 @@
 import { isChinese, t } from "./locale.mjs?v=1";
+import { writeClipboardText } from "./clipboard.mjs?v=1";
 
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
 const MAX_CODEX_STREAM_BYTES = 2 * 1024 * 1024 * 1024;
@@ -3717,7 +3718,7 @@ function setRecoveryToken(token) {
 }
 
 async function copyText(value, button) {
-  await navigator.clipboard.writeText(value);
+  await writeClipboardText(value, { clipboard: navigator.clipboard, documentRef: document });
   dispatchEngagement("payment_details_copied");
   const previous = button.textContent;
   button.textContent = t("Copied", "已复制");
@@ -4230,7 +4231,10 @@ function initializeTool() {
     freeSummaryButton.disabled = true;
     freeSummaryStatus.textContent = "";
     try {
-      await navigator.clipboard.writeText(buildFreeSupportSummary(currentAudit));
+      await writeClipboardText(buildFreeSupportSummary(currentAudit), {
+        clipboard: navigator.clipboard,
+        documentRef: document
+      });
       freeSummaryButton.textContent = t("Copied", "已复制");
       freeSummaryStatus.textContent = t(
         "Ready to paste into a support ticket or team message.",

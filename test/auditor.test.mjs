@@ -10,6 +10,35 @@ import {
   buildFreeSupportSummary,
   parseCostUsageText
 } from "../src/auditor.mjs";
+import { writeClipboardText } from "../src/clipboard.mjs";
+
+test("copies through a local selection when an embedded browser denies Clipboard API", async () => {
+  let appended = null;
+  let removed = false;
+  const textarea = {
+    value: "",
+    style: {},
+    setAttribute() {},
+    select() {},
+    setSelectionRange() {},
+    remove() { removed = true; }
+  };
+  const documentRef = {
+    body: { appendChild(node) { appended = node; } },
+    createElement() { return textarea; },
+    execCommand(command) {
+      return command === "copy" && appended?.value === "safe summary";
+    }
+  };
+
+  const route = await writeClipboardText("safe summary", {
+    clipboard: { writeText: async () => { throw new Error("denied"); } },
+    documentRef
+  });
+
+  assert.equal(route, "selection");
+  assert.equal(removed, true);
+});
 
 test("flags priced failed work without requiring a browser", () => {
   const audit = parseCostUsageText(JSON.stringify({
