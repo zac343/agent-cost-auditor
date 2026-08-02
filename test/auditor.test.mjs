@@ -40,6 +40,31 @@ test("copies through a local selection when an embedded browser denies Clipboard
   assert.equal(removed, true);
 });
 
+test("copies through a local selection when Clipboard API never settles", async () => {
+  const textarea = {
+    value: "",
+    style: {},
+    setAttribute() {},
+    select() {},
+    setSelectionRange() {},
+    remove() {}
+  };
+  const documentRef = {
+    body: { appendChild() {} },
+    createElement() { return textarea; },
+    execCommand() { return true; }
+  };
+
+  const route = await writeClipboardText("safe summary", {
+    clipboard: { writeText: () => new Promise(() => {}) },
+    documentRef,
+    clipboardTimeoutMs: 1
+  });
+
+  assert.equal(route, "selection");
+  assert.equal(textarea.value, "safe summary");
+});
+
 test("flags priced failed work without requiring a browser", () => {
   const audit = parseCostUsageText(JSON.stringify({
     provider: "openai",

@@ -6,12 +6,20 @@ export async function writeClipboardText(value, options = {}) {
     ? options.clipboard
     : globalThis.navigator?.clipboard;
   if (typeof clipboard?.writeText === "function") {
-    try {
-      await clipboard.writeText(text);
-      return "clipboard";
-    } catch {
-      // Some embedded browsers expose the API but deny it at call time.
-    }
+    const timeoutMs = Number.isFinite(options.clipboardTimeoutMs)
+      ? Math.max(1, Math.min(2_000, options.clipboardTimeoutMs))
+      : 800;
+    let timeoutId;
+    const copied = await Promise.race([
+      Promise.resolve()
+        .then(() => clipboard.writeText(text))
+        .then(() => true, () => false),
+      new Promise((resolve) => {
+        timeoutId = setTimeout(() => resolve(false), timeoutMs);
+      })
+    ]);
+    clearTimeout(timeoutId);
+    if (copied) return "clipboard";
   }
 
   const documentRef = Object.hasOwn(options, "documentRef")

@@ -1,5 +1,5 @@
 import { isChinese, t } from "./locale.mjs?v=1";
-import { writeClipboardText } from "./clipboard.mjs?v=1";
+import { writeClipboardText } from "./clipboard.mjs?v=2";
 
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
 const MAX_CODEX_STREAM_BYTES = 2 * 1024 * 1024 * 1024;
