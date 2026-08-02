@@ -4024,6 +4024,9 @@ function initializeTool() {
     sessionControl.hidden = platform !== "codex";
     resetFileSelection();
     error.hidden = true;
+    window.dispatchEvent(new CustomEvent("mailcheck:audit-platform-changed", {
+      detail: { platform }
+    }));
   };
 
   const pickerInput = () => usesDirectoryPicker(currentPlatform)
