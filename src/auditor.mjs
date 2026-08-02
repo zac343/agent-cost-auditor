@@ -1,3 +1,5 @@
+import { isChinese, t } from "./locale.mjs?v=1";
+
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
 const MAX_CODEX_STREAM_BYTES = 2 * 1024 * 1024 * 1024;
 const MAX_STREAM_LINE_CHARS = 2 * 1024 * 1024;
@@ -892,10 +894,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "claude-code",
       records: CLAUDE_BACKGROUND_RUNAWAY_SAMPLE_RECORDS,
-      title: "See the 10 runaway Claude Code background tasks",
-      detail: "The public task totals add up to 1,075,900 recorded prompt tokens across 10 background requests. The exact dollar amount remains unknown because the issue did not include trusted price data.",
-      button: "Run the background-task example",
-      note: "Synthetic rows preserve only the published per-task token totals. Choose your local ~/.claude/projects folder before using the result as quota or refund evidence."
+      title: t("See the 10 runaway Claude Code background tasks", "查看 10 个失控的 Claude Code 后台任务"),
+      detail: t(
+        "The public task totals add up to 1,075,900 recorded prompt tokens across 10 background requests. The exact dollar amount remains unknown because the issue did not include trusted price data.",
+        "公开任务合计记录了 10 个后台请求和 1,075,900 个提示 Token。原问题没有可信价格数据，因此无法确认准确金额。"
+      ),
+      button: t("Run the background-task example", "查看后台任务示例"),
+      note: t(
+        "Synthetic rows preserve only the published per-task token totals. Choose your local ~/.claude/projects folder before using the result as quota or refund evidence.",
+        "模拟记录只保留公开的单任务 Token 总量。用作额度或退款证据前，请选择本机 ~/.claude/projects 文件夹。"
+      )
     };
   }
   if (VERCEL_GATEWAY_REASONING_CAMPAIGNS.has(normalized)) {
@@ -903,10 +911,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "other",
       records: VERCEL_GATEWAY_REASONING_SAMPLE_RECORDS,
-      title: "See reasoning-disabled requests that still report reasoning tokens",
-      detail: "All three illustrative AI SDK 7 rows request reasoning: none, yet they report 2,340 nested reasoning tokens across Wafer AI and Fireworks AI.",
-      button: "Run the AI SDK 7 example",
-      note: "Synthetic data shaped from the public incident. Replace it with the same prompt and tool sequence through each provider before using the result as billing evidence."
+      title: t("See reasoning-disabled requests that still report reasoning tokens", "查看关闭推理后仍出现思考 Token 的请求"),
+      detail: t(
+        "All three illustrative AI SDK 7 rows request reasoning: none, yet they report 2,340 nested reasoning tokens across Wafer AI and Fireworks AI.",
+        "这 3 条 AI SDK 7 示例都要求不使用推理，但 Wafer AI 和 Fireworks AI 仍记录了 2,340 个思考 Token。"
+      ),
+      button: t("Run the AI SDK 7 example", "查看 AI SDK 7 示例"),
+      note: t(
+        "Synthetic data shaped from the public incident. Replace it with the same prompt and tool sequence through each provider before using the result as billing evidence.",
+        "这是按公开故障构造的模拟数据。用作计费证据前，请用相同提示词和工具流程分别复现并替换。"
+      )
     };
   }
   if (SPARKY_GEMINI_CACHE_CAMPAIGNS.has(normalized)) {
@@ -914,10 +928,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "gemini",
       records: SPARKY_GEMINI_CACHE_SAMPLE_RECORDS,
-      title: "See the three-request Gemini cache evidence",
-      detail: "This redacted example preserves 25,724 prompt tokens. Only the third request reports cachedContentTokenCount: 8,077 cached tokens out of its 11,077 prompt tokens.",
-      button: "Run the Gemini cache example",
-      note: "Public incident shape only. Missing cachedContentTokenCount is not zero: compare one cold request with at least two warm requests while provider, model, system instruction, tools, stable prefix, and workload remain fixed."
+      title: t("See the three-request Gemini cache evidence", "查看三次 Gemini 请求的缓存证据"),
+      detail: t(
+        "This redacted example preserves 25,724 prompt tokens. Only the third request reports cachedContentTokenCount: 8,077 cached tokens out of its 11,077 prompt tokens.",
+        "脱敏示例保留了 25,724 个提示 Token。只有第三次请求记录 cachedContentTokenCount：11,077 个提示 Token 中有 8,077 个来自缓存。"
+      ),
+      button: t("Run the Gemini cache example", "查看 Gemini 缓存示例"),
+      note: t(
+        "Public incident shape only. Missing cachedContentTokenCount is not zero: compare one cold request with at least two warm requests while provider, model, system instruction, tools, stable prefix, and workload remain fixed.",
+        "这里只复现公开故障形态。缺少 cachedContentTokenCount 不等于零；请固定服务商、模型、系统指令、工具、稳定前缀和任务，对比一次冷请求与至少两次热请求。"
+      )
     };
   }
   if (CLINE_CACHE_MISS_CAMPAIGNS.has(normalized)) {
@@ -925,10 +945,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "other",
       records: CLINE_CACHE_MISS_SAMPLE_RECORDS,
-      title: "See a bounded cache-miss control before blaming billing",
-      detail: "This illustrative three-call control keeps the provider, model, workload, and input size fixed. It records 900,000 input tokens, 0% explicit cache reads, and $0.15 total cost.",
-      button: "Run the cache-control example",
-      note: "Illustrative data only. A 600k context window is not a measured input-token count; replace this sample with at least three comparable local records before claiming a cache or billing defect."
+      title: t("See a bounded cache-miss control before blaming billing", "先用受控对比确认是否真的没有缓存"),
+      detail: t(
+        "This illustrative three-call control keeps the provider, model, workload, and input size fixed. It records 900,000 input tokens, 0% explicit cache reads, and $0.15 total cost.",
+        "这 3 次受控调用固定服务商、模型、任务和输入规模，共记录 900,000 个输入 Token、0% 明确缓存读取和 $0.15 费用。"
+      ),
+      button: t("Run the cache-control example", "查看缓存对比示例"),
+      note: t(
+        "Illustrative data only. A 600k context window is not a measured input-token count; replace this sample with at least three comparable local records before claiming a cache or billing defect.",
+        "仅为示例。600k 上下文窗口不等于实测输入 Token；声称缓存或计费异常前，请换成至少 3 条可比较的本地记录。"
+      )
     };
   }
   if (OPENCLAW_UNEXPECTED_MODEL_CAMPAIGNS.has(normalized)) {
@@ -936,10 +962,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "openclaw",
       records: OPENCLAW_UNEXPECTED_MODEL_SAMPLE_RECORDS,
-      title: "See the unexpected Opus trace shape immediately",
-      detail: "This six-call example keeps Sonnet as the configured model while the recorded assistant calls use Opus, exposing $2.61 of model-mismatch spend.",
-      button: "Run the unexpected-model example",
-      note: "Synthetic data shaped from the public incident; replace it with a bounded local transcript and billing window for actual evidence."
+      title: t("See the unexpected Opus trace shape immediately", "查看意外切换到 Opus 的调用形态"),
+      detail: t(
+        "This six-call example keeps Sonnet as the configured model while the recorded assistant calls use Opus, exposing $2.61 of model-mismatch spend.",
+        "这 6 次调用的配置模型保持为 Sonnet，但实际助手调用记录为 Opus，暴露出 $2.61 的模型不一致费用。"
+      ),
+      button: t("Run the unexpected-model example", "查看意外模型示例"),
+      note: t(
+        "Synthetic data shaped from the public incident; replace it with a bounded local transcript and billing window for actual evidence.",
+        "这是按公开故障构造的模拟数据；请换成限定范围的本地会话和计费时间窗，才能形成真实证据。"
+      )
     };
   }
   if (OPENCODE_FILTERED_SPEND_CAMPAIGNS.has(normalized)) {
@@ -947,10 +979,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "other",
       records: OPENCODE_FILTERED_SPEND_SAMPLE_RECORDS,
-      title: "See three billed, content-filtered calls immediately",
-      detail: "This three-call example preserves 1,604,874 input tokens, 7 output tokens, and $20.06 of spend even though every response ended as content-filtered.",
-      button: "Run the filtered-spend example",
-      note: "Synthetic data shaped from the public incident. Per-call amounts are rounded to the published $20.06 aggregate; replace the sample with your own export before using it as refund evidence."
+      title: t("See three billed, content-filtered calls immediately", "查看 3 次被内容过滤但仍计费的调用"),
+      detail: t(
+        "This three-call example preserves 1,604,874 input tokens, 7 output tokens, and $20.06 of spend even though every response ended as content-filtered.",
+        "这 3 次调用都以内容过滤结束，但仍记录 1,604,874 个输入 Token、7 个输出 Token 和 $20.06 费用。"
+      ),
+      button: t("Run the filtered-spend example", "查看过滤后计费示例"),
+      note: t(
+        "Synthetic data shaped from the public incident. Per-call amounts are rounded to the published $20.06 aggregate; replace the sample with your own export before using it as refund evidence.",
+        "这是按公开故障构造的模拟数据，单次金额由公开的 $20.06 总额取整拆分。用作退款证据前，请替换为你自己的导出文件。"
+      )
     };
   }
   if (PERIODIC_SPEND_CAMPAIGNS.has(normalized)) {
@@ -958,10 +996,16 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "other",
       records: PERIODIC_SPEND_SAMPLE_RECORDS,
-      title: "See a 30-minute billing pattern immediately",
-      detail: "This four-call example keeps the workload stable and exposes $0.8033 of observed spend at an exact 30-minute cadence, or $9.64 per day if it continues.",
-      button: "Run the recurring-spend example",
-      note: "Public incident pattern only; replace it with timestamped billing rows for your actual result."
+      title: t("See a 30-minute billing pattern immediately", "查看每 30 分钟重复计费的模式"),
+      detail: t(
+        "This four-call example keeps the workload stable and exposes $0.8033 of observed spend at an exact 30-minute cadence, or $9.64 per day if it continues.",
+        "这 4 次调用保持任务稳定，显示每 30 分钟准确发生一次费用，共 $0.8033；若持续，每天约 $9.64。"
+      ),
+      button: t("Run the recurring-spend example", "查看周期费用示例"),
+      note: t(
+        "Public incident pattern only; replace it with timestamped billing rows for your actual result.",
+        "这里只复现公开故障模式；请换成带时间戳的真实计费记录。"
+      )
     };
   }
   if (CACHE_INCIDENT_CAMPAIGNS.has(normalized)) {
@@ -969,20 +1013,32 @@ export function resolveAuditSample(campaign) {
       autoPreview: true,
       platform: "other",
       records: PROVIDER_CACHE_SAMPLE_RECORDS,
-      title: "See provider switching and missing cache reads immediately",
-      detail: "This five-request example keeps the model and workload fixed while the provider changes. It reports 5,000,000 prompt tokens, five providers, 0% cache reads, and $56.25 of priced spend.",
-      button: "Run the provider-cache example",
-      note: "Public incident pattern only; replace it with one bounded export for your actual result."
+      title: t("See provider switching and missing cache reads immediately", "查看服务商切换和缓存读取缺失"),
+      detail: t(
+        "This five-request example keeps the model and workload fixed while the provider changes. It reports 5,000,000 prompt tokens, five providers, 0% cache reads, and $56.25 of priced spend.",
+        "这 5 次请求固定模型和任务，只切换服务商，共记录 5,000,000 个提示 Token、5 个服务商、0% 缓存读取和 $56.25 可计价费用。"
+      ),
+      button: t("Run the provider-cache example", "查看服务商缓存示例"),
+      note: t(
+        "Public incident pattern only; replace it with one bounded export for your actual result.",
+        "这里只复现公开故障模式；请换成限定范围的真实导出文件。"
+      )
     };
   }
   return {
     autoPreview: false,
     platform: "openclaw",
     records: SAMPLE_RECORDS,
-    title: "A failed retry used $0.0184",
-    detail: "This tiny example shows the same answer format you will get from your own records.",
-    button: "Show me the example",
-    note: "Example data only. It is never counted as a customer analysis."
+    title: t("A failed retry used $0.0184", "一次失败重试仍消耗了 $0.0184"),
+    detail: t(
+      "See the answer format before choosing your own records.",
+      "先用示例看看最终会得到什么，不会计入真实客户分析。"
+    ),
+    button: t("Show example result", "查看示例结果"),
+    note: t(
+      "Example data only. It is never counted as a customer analysis.",
+      "仅为示例数据，不会计入真实客户分析。"
+    )
   };
 }
 
@@ -992,7 +1048,8 @@ export function resolveAuditRunPolicy(source = "user") {
       trackSampleClick: false,
       trackCompletion: true,
       trackJourney: true,
-      allowCheckout: true
+      allowCheckout: true,
+      promptOwnData: false
     };
   }
   if (source === "sample") {
@@ -1000,7 +1057,8 @@ export function resolveAuditRunPolicy(source = "user") {
       trackSampleClick: true,
       trackCompletion: false,
       trackJourney: false,
-      allowCheckout: false
+      allowCheckout: false,
+      promptOwnData: true
     };
   }
   if (source === "campaign_preview") {
@@ -1008,7 +1066,8 @@ export function resolveAuditRunPolicy(source = "user") {
       trackSampleClick: false,
       trackCompletion: false,
       trackJourney: false,
-      allowCheckout: false
+      allowCheckout: false,
+      promptOwnData: true
     };
   }
   throw new Error("Unsupported audit run source.");
@@ -2864,19 +2923,23 @@ function money(value) {
 }
 
 function percent(value) {
-  if (value === null || value === undefined) return "Not reported";
+  if (value === null || value === undefined) return t("Not reported", "未记录");
   return `${(Number(value) * 100).toFixed(Number(value) < 0.1 ? 1 : 0)}%`;
 }
 
 function intervalLabel(seconds, compact = false) {
   const value = Number(seconds || 0);
-  if (!value) return "Not detected";
+  if (!value) return t("Not detected", "未发现");
   if (value % 3600 === 0) {
     const hours = value / 3600;
-    return compact ? `${hours}h` : `${hours} hour${hours === 1 ? "" : "s"}`;
+    return compact
+      ? `${hours}h`
+      : t(`${hours} hour${hours === 1 ? "" : "s"}`, `${hours} 小时`);
   }
   const minutes = Math.round(value / 60);
-  return compact ? `${minutes}m` : `${minutes} minute${minutes === 1 ? "" : "s"}`;
+  return compact
+    ? `${minutes}m`
+    : t(`${minutes} minute${minutes === 1 ? "" : "s"}`, `${minutes} 分钟`);
 }
 
 function number(value) {
@@ -2917,57 +2980,60 @@ function findingRows(audit) {
   if (audit.summary.duplicateUsageRecords) {
     findings.push([
       "Critical",
-      "Exact duplicate provider rows were excluded from the cost total",
+      t("Exact duplicate provider rows were excluded from the cost total", "费用合计已排除完全重复的服务商记录"),
       audit.summary.duplicateUsageRecords
     ]);
   }
   if (audit.summary.replayedUsageRecords) {
     findings.push([
       "Critical",
-      "Child rollout files replay usage already recorded in an ancestor session",
+      t("Child rollout files replay usage already recorded in an ancestor session", "子记录重复包含了上级会话已经记录的用量"),
       audit.summary.replayedUsageRecords
     ]);
   }
   if (audit.summary.unmeteredToolUseRecords) {
     findings.push([
       "Critical",
-      "Some tool activity has no usage data, so the total may be too low",
+      t("Some tool activity has no usage data, so the total may be too low", "部分工具活动没有用量数据，当前合计可能偏低"),
       audit.summary.unmeteredToolUseRecords
     ]);
   }
   if (audit.summary.blockingWaitRecords) {
     findings.push([
       "High",
-      "Codex blocking-poll turns consumed recorded usage",
+      t("Codex blocking-poll turns consumed recorded usage", "Codex 阻塞轮询回合消耗了已记录用量"),
       audit.summary.blockingWaitRecords
     ]);
   }
   if (audit.summary.reasoningTokenRecords) {
     findings.push([
       "High",
-      "Reasoning tokens need provider-specific cost reconciliation",
+      t("Reasoning tokens need provider-specific cost reconciliation", "思考 Token 需要按服务商规则核对费用"),
       audit.summary.reasoningTokenRecords
     ]);
   }
   if (audit.summary.fallbackRecords) {
-    findings.push(["Critical", "A different model was used than the one selected", audit.summary.fallbackRecords]);
+    findings.push(["Critical", t("A different model was used than the one selected", "实际使用的模型与所选模型不同"), audit.summary.fallbackRecords]);
   }
   if (audit.summary.backgroundRecords) {
     findings.push([
       "High",
-      "Claude Code background or sidechain requests consumed recorded usage",
+      t("Claude Code background or sidechain requests consumed recorded usage", "Claude Code 后台或旁路请求消耗了已记录用量"),
       audit.summary.backgroundRecords
     ]);
   }
   if (audit.summary.providerFragmentationWorkloads) {
     findings.push([
       "High",
-      `A repeated workload crossed up to ${number(audit.summary.maxProvidersPerWorkload)} providers`,
+      t(
+        `A repeated workload crossed up to ${number(audit.summary.maxProvidersPerWorkload)} providers`,
+        `同一重复任务经过了最多 ${number(audit.summary.maxProvidersPerWorkload)} 个服务商`
+      ),
       audit.summary.providerFragmentationRecords
     ]);
   }
   if (audit.summary.unpricedRecords) {
-    findings.push(["High", "Some records have no reliable price", audit.summary.unpricedRecords]);
+    findings.push(["High", t("Some records have no reliable price", "部分记录没有可靠价格"), audit.summary.unpricedRecords]);
   }
   if (
     audit.summary.cacheReadObservedRecords > 0 &&
@@ -2975,29 +3041,38 @@ function findingRows(audit) {
   ) {
     findings.push([
       "Medium",
-      `Cache-read metadata is present on ${number(audit.summary.cacheReadObservedRecords)} of ${number(audit.recordCount)} records`,
+      t(
+        `Cache-read metadata is present on ${number(audit.summary.cacheReadObservedRecords)} of ${number(audit.recordCount)} records`,
+        `${number(audit.recordCount)} 条记录中只有 ${number(audit.summary.cacheReadObservedRecords)} 条包含缓存复用数据`
+      ),
       audit.summary.cacheReadMissingRecords
     ]);
   }
   if (audit.summary.lowCacheReuseWorkloads) {
     findings.push([
       "High",
-      `Explicit cache reads stayed at ${percent(audit.summary.lowCacheReuseRatio)} on repeated high-input work`,
+      t(
+        `Explicit cache reads stayed at ${percent(audit.summary.lowCacheReuseRatio)} on repeated high-input work`,
+        `重复的大输入任务中，明确记录的缓存复用率仅为 ${percent(audit.summary.lowCacheReuseRatio)}`
+      ),
       audit.summary.lowCacheReuseRecords
     ]);
   }
   if (audit.summary.periodicSpendRecords) {
     findings.push([
       "High",
-      `Priced calls repeat every ${intervalLabel(audit.summary.periodicIntervalSeconds)}`,
+      t(
+        `Priced calls repeat every ${intervalLabel(audit.summary.periodicIntervalSeconds)}`,
+        `付费调用每隔 ${intervalLabel(audit.summary.periodicIntervalSeconds)} 重复一次`
+      ),
       audit.summary.periodicSpendRecords
     ]);
   }
   if (audit.summary.failedOrCancelledRecords) {
-    findings.push(["High", "Failed or cancelled requests still cost usage", audit.summary.failedOrCancelledRecords]);
+    findings.push(["High", t("Failed or cancelled requests still cost usage", "失败或取消的请求仍然产生了用量"), audit.summary.failedOrCancelledRecords]);
   }
   if (audit.summary.unattributedRecords) {
-    findings.push(["Medium", "Usage cannot be assigned to an agent or feature", audit.summary.unattributedRecords]);
+    findings.push(["Medium", t("Usage cannot be assigned to an agent or feature", "部分用量无法归属到具体 Agent 或功能"), audit.summary.unattributedRecords]);
   }
   const top = audit.groups[0];
   if (
@@ -3005,7 +3080,7 @@ function findingRows(audit) {
     audit.summary.totalCostUsd > 0 &&
     Number(top?.costUsd || 0) / audit.summary.totalCostUsd >= 0.5
   ) {
-    findings.push(["Medium", "One session or task used most of the recorded spend", top.records]);
+    findings.push(["Medium", t("One session or task used most of the recorded spend", "一个会话或任务占用了大部分已记录费用"), top.records]);
   }
   return findings;
 }
@@ -3015,8 +3090,11 @@ export function buildAuditVerdict(audit) {
   if (summary.duplicateUsageRecords > 0) {
     return {
       tone: "critical",
-      title: "Exact duplicate usage rows were excluded",
-      detail: `${number(summary.duplicateUsageRecords)} rows reused the same stable attempt or response ID with identical model, status, token, and cost values. ${money(summary.duplicateCostUsd)} of repeated recorded cost was excluded. Root request IDs alone are not deduplicated, so distinct primary and fallback attempts stay separate.`
+      title: t("Exact duplicate usage rows were excluded", "已排除完全重复的用量记录"),
+      detail: t(
+        `${number(summary.duplicateUsageRecords)} rows reused the same stable attempt or response ID with identical model, status, token, and cost values. ${money(summary.duplicateCostUsd)} of repeated recorded cost was excluded. Root request IDs alone are not deduplicated, so distinct primary and fallback attempts stay separate.`,
+        `${number(summary.duplicateUsageRecords)} 条记录使用了相同的稳定尝试或响应 ID，并且模型、状态、Token 和费用完全一致；已从合计中排除 ${money(summary.duplicateCostUsd)} 的重复费用。仅根请求 ID 相同不会被去重，因此主要请求和回退请求仍分别保留。`
+      )
     };
   }
   if (summary.replayedUsageRecords > 0) {
@@ -3025,23 +3103,32 @@ export function buildAuditVerdict(audit) {
       Number(summary.replayedOutputTokens || 0);
     return {
       tone: "critical",
-      title: "Repeated usage is present across Codex rollout files",
-      detail: `${number(summary.replayedUsageRecords)} usage records and ${number(replayedTokens)} input/output tokens match an ancestor prefix. This is local replay evidence; compare the unique total with the server-side quota before claiming an overcharge.`
+      title: t("Repeated usage is present across Codex rollout files", "Codex 记录文件之间存在重复用量"),
+      detail: t(
+        `${number(summary.replayedUsageRecords)} usage records and ${number(replayedTokens)} input/output tokens match an ancestor prefix. This is local replay evidence; compare the unique total with the server-side quota before claiming an overcharge.`,
+        `${number(summary.replayedUsageRecords)} 条用量记录和 ${number(replayedTokens)} 个输入/输出 Token 与上级会话前缀一致。这是本机重复证据；提出重复计费前，应把去重后的合计与服务端额度核对。`
+      )
     };
   }
   if (summary.unmeteredToolUseRecords > 0) {
     const records = Number(summary.unmeteredToolUseRecords);
     return {
       tone: "critical",
-      title: "Some AI activity has no usage data",
-      detail: `${number(records)} tool action${records === 1 ? "" : "s"} ${records === 1 ? "has" : "have"} no tokens or cost in these files, so the total shown may be too low. Check the provider usage page for the same time before disputing the bill.`
+      title: t("Some AI activity has no usage data", "部分 AI 活动没有用量数据"),
+      detail: t(
+        `${number(records)} tool action${records === 1 ? "" : "s"} ${records === 1 ? "has" : "have"} no tokens or cost in these files, so the total shown may be too low. Check the provider usage page for the same time before disputing the bill.`,
+        `${number(records)} 次工具操作在这些文件里没有 Token 或费用，因此当前合计可能偏低。质疑账单前，请先核对服务商在相同时间段的用量页面。`
+      )
     };
   }
   if (summary.fallbackRecords > 0) {
     return {
       tone: "critical",
-      title: "Requests reached a different model than configured",
-      detail: `${number(summary.fallbackRecords)} records show a configured-versus-actual model mismatch. Reconcile those calls at the actual provider rate and record the fallback reason.`
+      title: t("Requests reached a different model than configured", "请求实际使用了不同于配置的模型"),
+      detail: t(
+        `${number(summary.fallbackRecords)} records show a configured-versus-actual model mismatch. Reconcile those calls at the actual provider rate and record the fallback reason.`,
+        `${number(summary.fallbackRecords)} 条记录显示配置模型与实际模型不一致。请按实际服务商价格核对这些调用，并记录发生模型回退的原因。`
+      )
     };
   }
   if (summary.blockingWaitRecords > 0) {
@@ -3053,63 +3140,96 @@ export function buildAuditVerdict(audit) {
     );
     return {
       tone: "warning",
-      title: "Codex blocking-poll turns consumed recorded usage",
-      detail: `${number(summary.blockingWaitRecords)} usage turns are directly associated with ${number(summary.blockingWaitCalls)} blocking wait calls and ${number(associatedTokens)} input/output tokens; ${number(summary.emptyBlockingWaitCalls)} recognized tool results contained no output payload. The ${number(requestedSeconds)} seconds shown are requested timeout ceilings, not measured elapsed time or proof of a separate backend overcharge.`
+      title: t("Codex blocking-poll turns consumed recorded usage", "Codex 阻塞轮询回合消耗了已记录用量"),
+      detail: t(
+        `${number(summary.blockingWaitRecords)} usage turns are directly associated with ${number(summary.blockingWaitCalls)} blocking wait calls and ${number(associatedTokens)} input/output tokens; ${number(summary.emptyBlockingWaitCalls)} recognized tool results contained no output payload. The ${number(requestedSeconds)} seconds shown are requested timeout ceilings, not measured elapsed time or proof of a separate backend overcharge.`,
+        `${number(summary.blockingWaitRecords)} 个用量回合直接对应 ${number(summary.blockingWaitCalls)} 次阻塞等待调用和 ${number(associatedTokens)} 个输入/输出 Token；其中 ${number(summary.emptyBlockingWaitCalls)} 个工具结果没有输出内容。显示的 ${number(requestedSeconds)} 秒是请求超时上限，不是实际耗时，也不能单独证明服务端重复收费。`
+      )
     };
   }
   if (summary.backgroundRecords > 0) {
     return {
       tone: "warning",
-      title: "Claude Code background usage is present in this session",
-      detail: `${number(summary.backgroundRecords)} background or sidechain requests report ${number(summary.backgroundInputTokens)} prompt tokens, including ${number(summary.backgroundCachedTokens)} cache-read and ${number(summary.backgroundCacheWriteTokens)} cache-write tokens, plus ${number(summary.backgroundOutputTokens)} output tokens. Compare these request timestamps with the credit window before claiming an incorrect charge.`
+      title: t("Claude Code background usage is present in this session", "这个会话中存在 Claude Code 后台用量"),
+      detail: t(
+        `${number(summary.backgroundRecords)} background or sidechain requests report ${number(summary.backgroundInputTokens)} prompt tokens, including ${number(summary.backgroundCachedTokens)} cache-read and ${number(summary.backgroundCacheWriteTokens)} cache-write tokens, plus ${number(summary.backgroundOutputTokens)} output tokens. Compare these request timestamps with the credit window before claiming an incorrect charge.`,
+        `${number(summary.backgroundRecords)} 个后台或旁路请求记录了 ${number(summary.backgroundInputTokens)} 个提示 Token，其中包括 ${number(summary.backgroundCachedTokens)} 个缓存读取、${number(summary.backgroundCacheWriteTokens)} 个缓存写入和 ${number(summary.backgroundOutputTokens)} 个输出 Token。提出计费异常前，请先把请求时间与额度变化时间核对。`
+      )
     };
   }
   if (summary.providerFragmentationWorkloads > 0) {
     return {
       tone: "critical",
-      title: `One repeated workload reached ${number(summary.maxProvidersPerWorkload)} providers`,
-      detail: `${number(summary.providerFragmentationRecords)} high-input records report multiple providers and a ${percent(summary.lowCacheReuseRatio ?? summary.cacheReadRatio)} cache-read ratio. Provider-local cache may be fragmented; compare the same bounded task with provider pinning before assigning causality.`
+      title: t(
+        `One repeated workload reached ${number(summary.maxProvidersPerWorkload)} providers`,
+        `同一重复任务经过了 ${number(summary.maxProvidersPerWorkload)} 个服务商`
+      ),
+      detail: t(
+        `${number(summary.providerFragmentationRecords)} high-input records report multiple providers and a ${percent(summary.lowCacheReuseRatio ?? summary.cacheReadRatio)} cache-read ratio. Provider-local cache may be fragmented; compare the same bounded task with provider pinning before assigning causality.`,
+        `${number(summary.providerFragmentationRecords)} 条大输入记录经过多个服务商，缓存复用率为 ${percent(summary.lowCacheReuseRatio ?? summary.cacheReadRatio)}。服务商各自的缓存可能被分散；确认原因前，请固定服务商对同一个限定任务做对照。`
+      )
     };
   }
   if (summary.unpricedRecords > 0) {
     return {
       tone: "warning",
-      title: "Usage is visible, but the exact bill is not reconstructable yet",
-      detail: `${number(summary.unpricedRecords)} records have no trusted cost or effective rate. The token evidence is usable, but exact currency claims require provider pricing or an invoice for the same interval.`
+      title: t("Usage is visible, but the exact bill is not reconstructable yet", "已看到用量，但暂时无法还原准确账单"),
+      detail: t(
+        `${number(summary.unpricedRecords)} records have no trusted cost or effective rate. The token evidence is usable, but exact currency claims require provider pricing or an invoice for the same interval.`,
+        `${number(summary.unpricedRecords)} 条记录没有可信费用或有效单价。Token 证据仍可使用，但要确认准确金额，还需要同一时间段的服务商价格或账单。`
+      )
     };
   }
   if (summary.cacheReadObservedRecords > 0 && summary.cacheReadMissingRecords > 0) {
     return {
       tone: "warning",
-      title: "Cache evidence is only partially reported",
-      detail: `${number(summary.cacheReadObservedRecords)} of ${number(audit.recordCount)} records expose an explicit cache-read field. The reported subset has a ${percent(summary.cacheReadRatio)} cache-read ratio; do not infer zero cache reads for the ${number(summary.cacheReadMissingRecords)} records where the field is absent.`
+      title: t("Cache evidence is only partially reported", "缓存证据只记录了一部分"),
+      detail: t(
+        `${number(summary.cacheReadObservedRecords)} of ${number(audit.recordCount)} records expose an explicit cache-read field. The reported subset has a ${percent(summary.cacheReadRatio)} cache-read ratio; do not infer zero cache reads for the ${number(summary.cacheReadMissingRecords)} records where the field is absent.`,
+        `${number(audit.recordCount)} 条记录中只有 ${number(summary.cacheReadObservedRecords)} 条明确包含缓存读取字段，已记录部分的缓存复用率为 ${percent(summary.cacheReadRatio)}；其余 ${number(summary.cacheReadMissingRecords)} 条缺少字段，不能直接当作缓存读取为零。`
+      )
     };
   }
   if (summary.lowCacheReuseWorkloads > 0) {
     return {
       tone: "warning",
-      title: "Repeated high-input calls show little observed cache reuse",
-      detail: `${number(summary.lowCacheReuseInputTokens)} input tokens across ${number(summary.lowCacheReuseRecords)} records explicitly report a ${percent(summary.lowCacheReuseRatio)} cache-read ratio. Check stable-prefix placement and provider routing with a bounded before/after run.`
+      title: t("Repeated high-input calls show little observed cache reuse", "重复的大输入调用几乎没有观察到缓存复用"),
+      detail: t(
+        `${number(summary.lowCacheReuseInputTokens)} input tokens across ${number(summary.lowCacheReuseRecords)} records explicitly report a ${percent(summary.lowCacheReuseRatio)} cache-read ratio. Check stable-prefix placement and provider routing with a bounded before/after run.`,
+        `${number(summary.lowCacheReuseRecords)} 条记录共 ${number(summary.lowCacheReuseInputTokens)} 个输入 Token，明确记录的缓存复用率为 ${percent(summary.lowCacheReuseRatio)}。请用一次范围受控的前后对照，检查固定前缀位置和服务商路由。`
+      )
     };
   }
   if (summary.periodicSpendRecords > 0) {
     return {
       tone: "warning",
-      title: `Priced calls recur every ${intervalLabel(summary.periodicIntervalSeconds)}`,
-      detail: `${number(summary.periodicSpendRecords)} similar timestamped records cost ${money(summary.periodicSpendCostUsd)}. If that cadence continues, the observed per-call cost implies about ${money(summary.periodicProjectedDailyCostUsd)} per day; correlate those timestamps with cron, daemon, heartbeat, and session-wake logs before assigning a trigger.`
+      title: t(
+        `Priced calls recur every ${intervalLabel(summary.periodicIntervalSeconds)}`,
+        `付费调用每隔 ${intervalLabel(summary.periodicIntervalSeconds)} 重复一次`
+      ),
+      detail: t(
+        `${number(summary.periodicSpendRecords)} similar timestamped records cost ${money(summary.periodicSpendCostUsd)}. If that cadence continues, the observed per-call cost implies about ${money(summary.periodicProjectedDailyCostUsd)} per day; correlate those timestamps with cron, daemon, heartbeat, and session-wake logs before assigning a trigger.`,
+        `${number(summary.periodicSpendRecords)} 条时间规律相似的记录共花费 ${money(summary.periodicSpendCostUsd)}。如果频率不变，按实测单次费用推算约为每天 ${money(summary.periodicProjectedDailyCostUsd)}；确认触发源前，请把时间与定时任务、后台进程、心跳和会话唤醒日志核对。`
+      )
     };
   }
   if (summary.failedOrCancelledRecords > 0) {
     return {
       tone: "warning",
-      title: "Failed work still consumed recorded usage",
-      detail: `${number(summary.failedOrCancelledRecords)} failed or cancelled records contain tokens or cost. Preserve their terminal usage and cap the retry path before another run.`
+      title: t("Failed work still consumed recorded usage", "失败任务仍消耗了已记录用量"),
+      detail: t(
+        `${number(summary.failedOrCancelledRecords)} failed or cancelled records contain tokens or cost. Preserve their terminal usage and cap the retry path before another run.`,
+        `${number(summary.failedOrCancelledRecords)} 条失败或取消的记录仍包含 Token 或费用。请保留这些最终用量证据，并在再次运行前限制自动重试。`
+      )
     };
   }
   return {
     tone: "clear",
-    title: "No supported cost-leak pattern appears in these records",
-    detail: "The selected data has complete pricing and no detected replay, unmetered tool loop, hidden fallback, or failed-request spend. This does not rule out server-side entitlement or quota errors."
+    title: t("No supported cost-leak pattern appears in these records", "这些记录中没有发现当前支持的异常消耗模式"),
+    detail: t(
+      "The selected data has complete pricing and no detected replay, unmetered tool loop, hidden fallback, or failed-request spend. This does not rule out server-side entitlement or quota errors.",
+      "所选数据的计价完整，未发现重复记录、无法计量的工具循环、隐藏模型回退或失败请求费用；但这不能排除服务端权限或额度错误。"
+    )
   };
 }
 
@@ -3135,6 +3255,10 @@ export function resolveInitialAuditPlatform(value, hasRequestedSession = false) 
   return COST_AUDIT_PLATFORMS.has(platform) ? platform : "codex";
 }
 
+export function usesDirectoryPicker(platform) {
+  return ["codex", "claude-code"].includes(String(platform || "").toLowerCase());
+}
+
 export function resetAuditPaymentUi(root) {
   const get = (id) => root?.getElementById?.(id) || null;
   const hide = (id, hidden) => {
@@ -3150,11 +3274,11 @@ export function resetAuditPaymentUi(root) {
   hide("paid-report", true);
   hide("payment-status", true);
   text("payment-amount", "1 USDC");
-  text("payment-network", "Base Mainnet");
+  text("payment-network", t("Base Mainnet", "Base 主网"));
   text("payment-address", "");
   text("payment-status", "");
   text("paid-total-cost", "$0");
-  text("paid-daily-rate", "Time range unavailable");
+  text("paid-daily-rate", t("Time range unavailable", "没有可用的时间范围"));
   get("paid-findings")?.replaceChildren?.();
 
   const transactionHash = get("transaction-hash");
@@ -3185,6 +3309,7 @@ export function resetAuditUi(root) {
   hide("audit-empty", false);
   hide("audit-results", true);
   hide("checkout-section", true);
+  hide("sample-next-step", true);
   hide("finding-count", true);
   hide("group-section", true);
 
@@ -3194,14 +3319,14 @@ export function resetAuditUi(root) {
   text("metric-records", "0");
   text("metric-cost", "$0");
   text("metric-providers", "0");
-  text("metric-cache", "Not reported");
+  text("metric-cache", t("Not reported", "未记录"));
   text("metric-unpriced", "0");
   text("metric-duplicates", "0");
   text("metric-replayed", "0");
   text("metric-blocking-waits", "0");
   text("metric-failed", "$0");
   text("metric-reasoning", "0");
-  text("metric-recurring", "None");
+  text("metric-recurring", t("None", "未发现"));
 
   empty("finding-list");
   empty("group-table-body");
@@ -3213,12 +3338,13 @@ export function resetAuditUi(root) {
 
 function renderLocalAudit(
   audit,
-  { trackCompletion = true, allowCheckout = true } = {}
+  { trackCompletion = true, allowCheckout = true, promptOwnData = false } = {}
 ) {
   resetAuditPaymentUi(document);
   setHidden("audit-empty", true);
   setHidden("audit-results", false);
   setHidden("checkout-section", !allowCheckout);
+  setHidden("sample-next-step", !promptOwnData);
   setHidden("group-section", false);
   setText("metric-records", number(audit.recordCount));
   setText("metric-cost", money(audit.summary.totalCostUsd));
@@ -3226,23 +3352,32 @@ function renderLocalAudit(
   setText(
     "metric-cache",
     audit.summary.cacheReadObservedRecords > 0
-      ? `${percent(audit.summary.cacheReadRatio)} · ${number(audit.summary.cacheReadObservedRecords)}/${number(audit.recordCount)} rows`
-      : "Not reported"
+      ? t(
+          `${percent(audit.summary.cacheReadRatio)} · ${number(audit.summary.cacheReadObservedRecords)}/${number(audit.recordCount)} rows`,
+          `${percent(audit.summary.cacheReadRatio)} · ${number(audit.summary.cacheReadObservedRecords)}/${number(audit.recordCount)} 条`
+        )
+      : t("Not reported", "未记录")
   );
   setText("metric-unpriced", number(audit.summary.unpricedRecords));
   setText("metric-duplicates", number(audit.summary.duplicateUsageRecords));
   setText("metric-replayed", number(audit.summary.replayedUsageRecords));
   setText(
     "metric-blocking-waits",
-    `${number(audit.summary.blockingWaitCalls)} calls / ${number(audit.summary.blockingWaitRecords)} turns`
+    t(
+      `${number(audit.summary.blockingWaitCalls)} calls / ${number(audit.summary.blockingWaitRecords)} turns`,
+      `${number(audit.summary.blockingWaitCalls)} 次调用 / ${number(audit.summary.blockingWaitRecords)} 个回合`
+    )
   );
   setText("metric-failed", money(audit.summary.failedCostUsd));
   setText("metric-reasoning", number(audit.summary.reasoningTokens));
   setText(
     "metric-recurring",
     audit.summary.periodicSpendRecords
-      ? `${intervalLabel(audit.summary.periodicIntervalSeconds, true)} · ${money(audit.summary.periodicProjectedDailyCostUsd)}/day`
-      : "None"
+      ? t(
+          `${intervalLabel(audit.summary.periodicIntervalSeconds, true)} · ${money(audit.summary.periodicProjectedDailyCostUsd)}/day`,
+          `${intervalLabel(audit.summary.periodicIntervalSeconds, true)} · 每天 ${money(audit.summary.periodicProjectedDailyCostUsd)}`
+        )
+      : t("None", "未发现")
   );
   const verdict = buildAuditVerdict(audit);
   const verdictElement = document.getElementById("audit-verdict");
@@ -3250,19 +3385,28 @@ function renderLocalAudit(
   setText("audit-verdict-title", verdict.title);
   setText("audit-verdict-detail", verdict.detail);
   const findings = findingRows(audit);
-  setText("finding-count", `${findings.length} issue${findings.length === 1 ? "" : "s"} found`);
+  setText(
+    "finding-count",
+    t(`${findings.length} issue${findings.length === 1 ? "" : "s"} found`, `发现 ${findings.length} 个问题`)
+  );
   setHidden("finding-count", false);
   const list = document.getElementById("finding-list");
   list.replaceChildren(...findings.map(([severity, title, records]) => {
     const item = document.createElement("li");
     const badge = document.createElement("span");
     badge.className = `severity severity-${severity.toLowerCase()}`;
-    badge.textContent = severity;
+    badge.textContent = t(
+      severity,
+      severity === "Critical" ? "严重" : severity === "High" ? "高" : "中"
+    );
     const copy = document.createElement("div");
     const strong = document.createElement("strong");
     strong.textContent = title;
     const detail = document.createElement("span");
-    detail.textContent = `${number(records)} affected record${records === 1 ? "" : "s"}`;
+    detail.textContent = t(
+      `${number(records)} affected record${records === 1 ? "" : "s"}`,
+      `影响 ${number(records)} 条记录`
+    );
     copy.append(strong, detail);
     item.append(badge, copy);
     return item;
@@ -3277,12 +3421,18 @@ function renderLocalAudit(
       group.actualModel,
       group.status,
       group.duplicateUsageRecords > 0
-        ? `${number(group.records - group.duplicateUsageRecords)} · ${number(group.duplicateUsageRecords)} duplicate`
+        ? t(
+            `${number(group.records - group.duplicateUsageRecords)} · ${number(group.duplicateUsageRecords)} duplicate`,
+            `${number(group.records - group.duplicateUsageRecords)} 条有效 · ${number(group.duplicateUsageRecords)} 条重复`
+          )
         : number(group.records),
       group.cacheReadObservedRecords > 0
-        ? `${percent(group.cachedTokens / Math.max(1, group.cacheReadObservedInputTokens))} · ${number(group.cacheReadObservedRecords)}/${number(group.records)} rows`
-        : "Not reported",
-      group.costUsd === null ? "Unpriced" : money(group.costUsd)
+        ? t(
+            `${percent(group.cachedTokens / Math.max(1, group.cacheReadObservedInputTokens))} · ${number(group.cacheReadObservedRecords)}/${number(group.records)} rows`,
+            `${percent(group.cachedTokens / Math.max(1, group.cacheReadObservedInputTokens))} · ${number(group.cacheReadObservedRecords)}/${number(group.records)} 条`
+          )
+        : t("Not reported", "未记录"),
+      group.costUsd === null ? t("Unpriced", "无法计价") : money(group.costUsd)
     ]) {
       const cell = document.createElement("td");
       cell.textContent = value;
@@ -3481,8 +3631,8 @@ function renderPaidReport(report) {
   setHidden("paid-report", false);
   setText("paid-total-cost", money(report.summary.totalCostUsd));
   setText("paid-daily-rate", report.summary.dailyRunRateUsd === null
-    ? "Time range unavailable"
-    : `${money(report.summary.dailyRunRateUsd)} / day`);
+    ? t("Time range unavailable", "没有可用的时间范围")
+    : t(`${money(report.summary.dailyRunRateUsd)} / day`, `每天 ${money(report.summary.dailyRunRateUsd)}`));
   const findings = document.getElementById("paid-findings");
   findings.replaceChildren(...report.findings.map((finding, index) => {
     const item = document.createElement("article");
@@ -3494,8 +3644,10 @@ function renderPaidReport(report) {
     title.textContent = `${index + 1}. ${finding.title}`;
     heading.append(badge, title);
     const evidence = document.createElement("p");
-    evidence.textContent =
-      `${number(finding.affectedRecords)} records; ${money(finding.costUsd)} in associated priced cost.`;
+    evidence.textContent = t(
+      `${number(finding.affectedRecords)} records; ${money(finding.costUsd)} in associated priced cost.`,
+      `${number(finding.affectedRecords)} 条记录；相关已计价费用为 ${money(finding.costUsd)}。`
+    );
     const action = document.createElement("p");
     action.textContent = finding.action;
     item.append(heading, evidence, action);
@@ -3541,7 +3693,7 @@ async function copyText(value, button) {
   await navigator.clipboard.writeText(value);
   dispatchEngagement("payment_details_copied");
   const previous = button.textContent;
-  button.textContent = "Copied";
+  button.textContent = t("Copied", "已复制");
   setTimeout(() => {
     button.textContent = previous;
   }, 1200);
@@ -3551,7 +3703,10 @@ function showPayment(session, token = session.token) {
   setHidden("payment-panel", false);
   setHidden("paid-report", true);
   setText("payment-amount", `${session.payment.amount} ${session.payment.token}`);
-  setText("payment-network", session.payment.network);
+  setText(
+    "payment-network",
+    t(session.payment.network, session.payment.network === "Base Mainnet" ? "Base 主网" : session.payment.network)
+  );
   setText("payment-address", session.payment.recipientAddress);
   const addressButton = document.getElementById("copy-address");
   addressButton.onclick = () => copyText(session.payment.recipientAddress, addressButton);
@@ -3565,8 +3720,14 @@ function showPayment(session, token = session.token) {
   setText(
     "wallet-note",
     walletAvailable
-      ? "The wallet will switch to Base and request an exact native USDC transfer."
-      : "No browser wallet detected. Pay from any wallet by using the address above."
+      ? t(
+          "The wallet will switch to Base and request an exact native USDC transfer.",
+          "钱包将切换到 Base，并请求准确金额的原生 USDC 转账。"
+        )
+      : t(
+          "No browser wallet detected. Pay from any wallet by using the address above.",
+          "没有检测到浏览器钱包；可使用任意钱包向上方地址付款。"
+        )
   );
   dispatchEngagement(
     walletAvailable ? "checkout_wallet_available" : "checkout_wallet_unavailable"
@@ -3617,7 +3778,7 @@ async function sendWalletPayment(payment) {
 async function confirmPayment(token, transactionHash) {
   const status = document.getElementById("payment-status");
   status.hidden = false;
-  status.textContent = "Checking the finalized Base transfer...";
+  status.textContent = t("Checking the finalized Base transfer...", "正在检查 Base 转账的最终确认状态...");
   for (let attempt = 0; attempt < 10; attempt += 1) {
     const response = await fetch("/api/payments/base-usdc/confirm", {
       method: "POST",
@@ -3634,10 +3795,13 @@ async function confirmPayment(token, transactionHash) {
       return;
     }
     if (response.status !== 202) throw new Error(payload.error || "Payment verification failed.");
-    status.textContent = "Transfer found; waiting for Base finalized status...";
+    status.textContent = t("Transfer found; waiting for Base finalized status...", "已找到转账，正在等待 Base 最终确认...");
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
-  throw new Error("The transfer is still pending finality. Keep this private report link and retry shortly.");
+  throw new Error(t(
+    "The transfer is still pending finality. Keep this private report link and retry shortly.",
+    "转账仍在等待最终确认。请保留当前私密报告链接，稍后重试。"
+  ));
 }
 
 function initializeTool() {
@@ -3663,6 +3827,8 @@ function initializeTool() {
   const auditButton = form.querySelector('button[type="submit"]');
   const sampleButton = document.getElementById("sample-button");
   const quickExampleButton = document.getElementById("quick-example-button");
+  const useOwnDataButton = document.getElementById("use-own-data-button");
+  const startAuditButton = document.getElementById("start-audit-button");
   const checkoutButton = document.getElementById("checkout-button");
   let currentAudit = null;
   let currentAuditCanCheckout = false;
@@ -3683,68 +3849,112 @@ function initializeTool() {
 
   const platformCopy = {
     codex: {
-      title: "2. Choose your Codex usage folder",
-      subtitle: "Compatible records are found automatically and never leave this browser.",
-      locationLabel: "Usually stored here",
+      title: t("2. Choose the Codex usage folder", "2. 选择 Codex 使用记录文件夹"),
+      subtitle: t(
+        "We find compatible records automatically. You do not need to open or understand them.",
+        "系统会自动找出可用记录，不需要打开文件或看懂日志。"
+      ),
+      locationLabel: t("Folder to choose", "需要选择的文件夹"),
       location: "~/.codex/sessions",
-      locationHint: "Mac: press Cmd+Shift+G in the folder picker and paste this path. Windows: use %USERPROFILE%\\.codex\\sessions.",
-      fileLabel: "Choose individual files instead",
-      directoryLabel: "Choose Codex usage folder"
+      locationHint: t(
+        "Mac: after the picker opens, press Cmd+Shift+G, paste ~/.codex/sessions, press Enter, then choose the folder. Windows: use %USERPROFILE%\\.codex\\sessions.",
+        "Mac：选择器打开后按 Cmd+Shift+G，粘贴 ~/.codex/sessions，按回车，再选择文件夹。Windows：使用 %USERPROFILE%\\.codex\\sessions。"
+      ),
+      fileLabel: t("Choose individual files instead", "改为选择单个文件"),
+      directoryLabel: t("Choose Codex usage folder", "选择 Codex 记录文件夹"),
+      ownDataLabel: t("Choose my Codex records", "选择我的 Codex 记录")
     },
     "claude-code": {
-      title: "2. Choose your Claude Code usage folder",
-      subtitle: "Compatible records are found automatically and never leave this browser.",
-      locationLabel: "Usually stored here",
+      title: t("2. Choose the Claude Code usage folder", "2. 选择 Claude Code 使用记录文件夹"),
+      subtitle: t(
+        "We find compatible records automatically. You do not need to open or understand them.",
+        "系统会自动找出可用记录，不需要打开文件或看懂日志。"
+      ),
+      locationLabel: t("Folder to choose", "需要选择的文件夹"),
       location: "~/.claude/projects",
-      locationHint: "Mac: press Cmd+Shift+G in the folder picker and paste this path. Windows: use %USERPROFILE%\\.claude\\projects.",
-      fileLabel: "Choose individual files instead",
-      directoryLabel: "Choose Claude Code usage folder"
+      locationHint: t(
+        "Mac: after the picker opens, press Cmd+Shift+G, paste ~/.claude/projects, press Enter, then choose the folder. Windows: use %USERPROFILE%\\.claude\\projects.",
+        "Mac：选择器打开后按 Cmd+Shift+G，粘贴 ~/.claude/projects，按回车，再选择文件夹。Windows：使用 %USERPROFILE%\\.claude\\projects。"
+      ),
+      fileLabel: t("Choose individual files instead", "改为选择单个文件"),
+      directoryLabel: t("Choose Claude Code usage folder", "选择 Claude Code 记录文件夹"),
+      ownDataLabel: t("Choose my Claude Code records", "选择我的 Claude Code 记录")
     },
     opencode: {
-      title: "2. Export one OpenCode session, then choose the JSON file",
-      subtitle: "Run the command below once. OpenCode will ask which session to export.",
-      locationLabel: "Run in Terminal",
+      title: t("2. Export one OpenCode session, then choose the JSON file", "2. 导出一个 OpenCode 会话并选择 JSON 文件"),
+      subtitle: t(
+        "Run the command below once. OpenCode will ask which session to export.",
+        "在终端运行一次下方命令，OpenCode 会让你选择要导出的会话。"
+      ),
+      locationLabel: t("Run in Terminal", "在终端运行"),
       location: "opencode export --sanitize > session.json",
-      locationHint: "The --sanitize option redacts transcript, file, and path content while keeping cost and token evidence.",
-      fileLabel: "Choose session.json",
-      directoryLabel: ""
+      locationHint: t(
+        "The --sanitize option redacts transcript, file, and path content while keeping cost and token evidence.",
+        "--sanitize 会隐藏对话、文件与路径内容，只保留费用和 Token 证据。"
+      ),
+      fileLabel: t("Choose session.json", "选择 session.json"),
+      directoryLabel: "",
+      ownDataLabel: t("Choose my OpenCode export", "选择我的 OpenCode 导出文件")
     },
     openclaw: {
-      title: "2. Choose the affected OpenClaw session",
-      subtitle: "Pick the session from when the unexpected model or cost appeared.",
-      locationLabel: "Choose this file type",
+      title: t("2. Choose the affected OpenClaw session", "2. 选择出现异常的 OpenClaw 会话"),
+      subtitle: t(
+        "Pick the session from when the unexpected model or cost appeared.",
+        "选择出现异常模型或费用时对应的会话。"
+      ),
+      locationLabel: t("File to choose", "需要选择的文件"),
       location: "session transcript (.jsonl)",
-      locationHint: "The transcript is read on this device and is never uploaded.",
-      fileLabel: "Choose OpenClaw session",
-      directoryLabel: ""
+      locationHint: t(
+        "The transcript is read on this device and is never uploaded.",
+        "会话记录只在本机读取，不会上传。"
+      ),
+      fileLabel: t("Choose OpenClaw session", "选择 OpenClaw 会话"),
+      directoryLabel: "",
+      ownDataLabel: t("Choose my OpenClaw session", "选择我的 OpenClaw 会话")
     },
     gemini: {
-      title: "2. Choose your Gemini usage export",
-      subtitle: "Pick the file downloaded from the Gemini billing or usage page.",
-      locationLabel: "Choose this file type",
+      title: t("2. Choose your Gemini usage export", "2. 选择 Gemini 使用记录导出文件"),
+      subtitle: t(
+        "Pick the file downloaded from the Gemini billing or usage page.",
+        "选择从 Gemini 费用或用量页面下载的文件。"
+      ),
+      locationLabel: t("File to choose", "需要选择的文件"),
       location: "usage export (.json or .csv)",
-      locationHint: "The export is read on this device and is never uploaded.",
-      fileLabel: "Choose Gemini export",
-      directoryLabel: ""
+      locationHint: t(
+        "The export is read on this device and is never uploaded.",
+        "导出文件只在本机读取，不会上传。"
+      ),
+      fileLabel: t("Choose Gemini export", "选择 Gemini 导出文件"),
+      directoryLabel: "",
+      ownDataLabel: t("Choose my Gemini export", "选择我的 Gemini 导出文件")
     },
     other: {
-      title: "2. Choose your usage export",
-      subtitle: "Pick the file downloaded from the AI provider or gateway.",
-      locationLabel: "Choose this file type",
+      title: t("2. Choose your usage export", "2. 选择 AI 使用记录导出文件"),
+      subtitle: t(
+        "Pick the file downloaded from the AI provider or gateway.",
+        "选择从 AI 服务商或网关下载的使用记录。"
+      ),
+      locationLabel: t("File to choose", "需要选择的文件"),
       location: "usage export (.json or .csv)",
-      locationHint: "The export is read on this device and is never uploaded.",
-      fileLabel: "Choose JSON or CSV",
-      directoryLabel: ""
+      locationHint: t(
+        "The export is read on this device and is never uploaded.",
+        "导出文件只在本机读取，不会上传。"
+      ),
+      fileLabel: t("Choose JSON or CSV", "选择 JSON 或 CSV"),
+      directoryLabel: "",
+      ownDataLabel: t("Choose my usage export", "选择我的使用记录")
     }
   };
 
   const updateAuditButton = () => {
     const hasInput = selectedFiles.length > 0 || Boolean(textarea.value.trim());
     auditButton.disabled = !hasInput;
-    auditButton.textContent = hasInput ? "Find what used my credits" : "Choose usage history to continue";
+    auditButton.textContent = hasInput
+      ? t("Find what used my credits", "查找异常消耗")
+      : t("Choose usage history to continue", "选择使用记录后继续");
   };
 
-  const resetFileSelection = (message = "No usage history selected yet") => {
+  const resetFileSelection = (message = t("No usage history selected yet", "还没有选择使用记录")) => {
     selectedFiles = [];
     fileInput.value = "";
     directoryInput.value = "";
@@ -3758,8 +3968,11 @@ function initializeTool() {
     selected.textContent = selectedFiles.length === 1
       ? `${selectedFiles[0].name} · ${byteSize(totalBytes)}`
       : selectedFiles.length > 1
-        ? `${number(selectedFiles.length)} files · ${byteSize(totalBytes)} combined`
-        : "Nothing selected";
+        ? t(
+            `${number(selectedFiles.length)} files · ${byteSize(totalBytes)} combined`,
+            `${number(selectedFiles.length)} 个文件 · 合计 ${byteSize(totalBytes)}`
+          )
+        : t("Nothing selected", "没有选择文件");
     if (selectedFiles.length) dispatchEngagement("audit_input_selected");
     updateAuditButton();
   };
@@ -3774,7 +3987,9 @@ function initializeTool() {
     sourceLocationHint.textContent = copy.locationHint;
     fileButtonLabel.textContent = copy.fileLabel;
     directoryButtonLabel.textContent = copy.directoryLabel;
-    const supportsDirectory = ["codex", "claude-code"].includes(platform);
+    useOwnDataButton.textContent = copy.ownDataLabel;
+    startAuditButton.textContent = copy.ownDataLabel;
+    const supportsDirectory = usesDirectoryPicker(platform);
     directoryControl.hidden = !supportsDirectory;
     directoryControl.classList.toggle("primary-file-button", supportsDirectory);
     fileControl.classList.toggle("primary-file-button", !supportsDirectory);
@@ -3782,6 +3997,23 @@ function initializeTool() {
     resetFileSelection();
     error.hidden = true;
   };
+
+  const pickerInput = () => usesDirectoryPicker(currentPlatform)
+    ? directoryInput
+    : fileInput;
+
+  const openCurrentPicker = () => {
+    dispatchEngagement("audit_picker_opened");
+    pickerInput().click();
+  };
+
+  fileInput.addEventListener("click", (event) => {
+    if (event.isTrusted) dispatchEngagement("audit_picker_opened");
+  });
+
+  directoryInput.addEventListener("click", (event) => {
+    if (event.isTrusted) dispatchEngagement("audit_picker_opened");
+  });
 
   fileInput.addEventListener("change", () => {
     directoryInput.value = "";
@@ -3792,8 +4024,8 @@ function initializeTool() {
     if (selectedFiles.length || textarea.value === syntheticSampleText) return;
     const hasPastedRecords = Boolean(textarea.value.trim());
     selected.textContent = hasPastedRecords
-      ? "Pasted records · stay in this browser"
-      : "Nothing selected";
+      ? t("Pasted records · stay in this browser", "已粘贴记录 · 仅在本机处理")
+      : t("Nothing selected", "没有选择文件");
     if (hasPastedRecords) dispatchEngagement("audit_input_selected");
     updateAuditButton();
   });
@@ -3810,19 +4042,34 @@ function initializeTool() {
       .reduce((total, value) => total + value, 0);
     if (!selectedFiles.length) {
       selected.textContent = hint
-        ? "No rollout filename matched that session ID"
-        : `No compatible non-empty ${isClaudeCode ? "Claude Code session" : "Codex rollout"} files found`;
+        ? t("No rollout filename matched that session ID", "没有文件名匹配这个会话 ID")
+        : t(
+            `No compatible non-empty ${isClaudeCode ? "Claude Code session" : "Codex rollout"} files found`,
+            `没有找到可用的${isClaudeCode ? " Claude Code 会话" : " Codex 记录"}文件`
+          );
       error.textContent = hint
-        ? "The selected folder does not contain a rollout whose path or filename includes that session ID."
-        : `Choose a ${isClaudeCode ? "Claude Code .claude/projects" : "Codex sessions"} folder containing non-empty .jsonl or .ndjson files.`;
+        ? t(
+            "The selected folder does not contain a rollout whose path or filename includes that session ID.",
+            "所选文件夹中没有路径或文件名包含这个会话 ID 的记录。"
+          )
+        : t(
+            `Choose a ${isClaudeCode ? "Claude Code .claude/projects" : "Codex sessions"} folder containing non-empty .jsonl or .ndjson files.`,
+            `请选择包含非空 .jsonl 或 .ndjson 文件的${isClaudeCode ? " Claude Code .claude/projects" : " Codex sessions"} 文件夹。`
+          );
       error.hidden = false;
       updateAuditButton();
       return;
     }
     const matchText = hint
-      ? `${number(selection.matchedFiles)} matching rollout${selection.matchedFiles === 1 ? "" : "s"} plus nearby files`
-      : `${number(selectedFiles.length)} newest ${isClaudeCode ? "Claude Code session" : "Codex rollout"} files`;
-    selected.textContent = `${matchText} · ${byteSize(selection.totalBytes)}${skippedCount ? ` · ${number(skippedCount)} older, unsupported, empty, or large files skipped` : ""}`;
+      ? t(
+          `${number(selection.matchedFiles)} matching rollout${selection.matchedFiles === 1 ? "" : "s"} plus nearby files`,
+          `${number(selection.matchedFiles)} 个匹配记录及其邻近文件`
+        )
+      : t(
+          `${number(selectedFiles.length)} newest ${isClaudeCode ? "Claude Code session" : "Codex rollout"} files`,
+          `已选择最新的 ${number(selectedFiles.length)} 个${isClaudeCode ? " Claude Code 会话" : " Codex 记录"}文件`
+        );
+    selected.textContent = `${matchText} · ${byteSize(selection.totalBytes)}${skippedCount ? t(` · ${number(skippedCount)} older, unsupported, empty, or large files skipped`, ` · 已跳过 ${number(skippedCount)} 个较旧、不支持、空白或过大的文件`) : ""}`;
     error.hidden = true;
     dispatchEngagement("audit_input_selected");
     updateAuditButton();
@@ -3873,8 +4120,8 @@ function initializeTool() {
     const originalButtonText = auditButton.textContent;
     auditButton.disabled = true;
     auditButton.textContent = selectedFiles.length
-      ? "Scanning local files..."
-      : "Analyzing records...";
+      ? t("Scanning local files...", "正在扫描本机文件...")
+      : t("Analyzing records...", "正在分析记录...");
     const source = (
       !selectedFiles.length && syntheticSampleText && textarea.value === syntheticSampleText
     ) ? "campaign_preview" : "user";
@@ -3917,8 +4164,8 @@ function initializeTool() {
     textarea.value = syntheticSampleText;
     resetFileSelection(
       source === "campaign_preview"
-        ? "Public incident example loaded · synthetic data"
-        : "Example answer loaded · synthetic data"
+        ? t("Public incident example loaded · synthetic data", "已载入公开故障示例 · 模拟数据")
+        : t("Example answer loaded · synthetic data", "已载入示例结果 · 模拟数据")
     );
     currentAudit = parseCostUsageText(syntheticSampleText);
     currentAuditCanCheckout = policy.allowCheckout;
@@ -3927,6 +4174,20 @@ function initializeTool() {
   };
   sampleButton.addEventListener("click", () => loadAuditSample("sample"));
   quickExampleButton.addEventListener("click", () => loadAuditSample("sample"));
+  startAuditButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    openCurrentPicker();
+  });
+  useOwnDataButton.addEventListener("click", () => {
+    syntheticSampleText = "";
+    textarea.value = "";
+    currentAudit = null;
+    currentAuditCanCheckout = false;
+    resetAuditUi(document);
+    resetFileSelection();
+    error.hidden = true;
+    openCurrentPicker();
+  });
 
   document.getElementById("clear-button").addEventListener("click", () => {
     currentAudit = null;
@@ -3944,7 +4205,7 @@ function initializeTool() {
     if (!currentAudit || !currentAuditCanCheckout || checkoutButton.disabled) return;
     checkoutButton.disabled = true;
     const original = checkoutButton.textContent;
-    checkoutButton.textContent = "Creating private payment session...";
+    checkoutButton.textContent = t("Creating private payment session...", "正在创建私密付款订单...");
     error.hidden = true;
     try {
       dispatchEngagement("cta_clicked");
@@ -3953,10 +4214,10 @@ function initializeTool() {
       const response = await fetch(`/api/agent-cost-audit-session${qa}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ language: "en", audit })
+        body: JSON.stringify({ language: isChinese() ? "zh" : "en", audit })
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || "Could not create the payment session.");
+      if (!response.ok) throw new Error(payload.error || t("Could not create the payment session.", "无法创建付款订单。"));
       showPayment(payload);
       document.getElementById("payment-panel").scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (caught) {
@@ -3976,12 +4237,12 @@ function initializeTool() {
     const original = button.textContent;
     try {
       if (!REPORT_TOKEN_PATTERN.test(token || "") || !payment) {
-        throw new Error("Payment session is unavailable.");
+        throw new Error(t("Payment session is unavailable.", "付款订单不可用。"));
       }
       button.disabled = true;
-      button.textContent = "Waiting for wallet...";
+      button.textContent = t("Waiting for wallet...", "正在等待钱包...");
       status.hidden = false;
-      status.textContent = "Confirm the Base USDC transfer in your wallet.";
+      status.textContent = t("Confirm the Base USDC transfer in your wallet.", "请在钱包中确认 Base USDC 转账。");
       dispatchEngagement("wallet_payment_started");
       const transactionHash = await sendWalletPayment(payment);
       document.getElementById("transaction-hash").value = transactionHash;
@@ -3991,7 +4252,7 @@ function initializeTool() {
     } catch (caught) {
       status.hidden = false;
       status.textContent = Number(caught?.code) === 4001
-        ? "Wallet action was cancelled. No payment was sent."
+        ? t("Wallet action was cancelled. No payment was sent.", "钱包操作已取消，没有发出付款。")
         : caught.message;
     } finally {
       button.disabled = false;
@@ -4010,9 +4271,9 @@ function initializeTool() {
     const token = event.currentTarget.dataset.token;
     const status = document.getElementById("payment-status");
     try {
-      if (!REPORT_TOKEN_PATTERN.test(token || "")) throw new Error("Payment session is unavailable.");
+      if (!REPORT_TOKEN_PATTERN.test(token || "")) throw new Error(t("Payment session is unavailable.", "付款订单不可用。"));
       if (!TRANSACTION_HASH_PATTERN.test(transactionHash)) {
-        throw new Error("Enter a complete 0x transaction hash.");
+        throw new Error(t("Enter a complete 0x transaction hash.", "请输入完整的 0x 交易哈希。"));
       }
       event.currentTarget.disabled = true;
       dispatchEngagement("payment_confirmation_submitted");

@@ -1,8 +1,12 @@
 # Agent Cost Auditor
 
-A browser-local audit core for finding expensive AI-agent behavior in real usage exports.
+Find the AI session, retry, fallback, cache miss, or failed request that consumed your budget. The free audit reads your usage records locally and does not upload prompts, messages, or credentials.
 
-Production tool: https://mailcheck.agentcartai.com/tools/agent-cost-auditor/
+## Fastest path
+
+Open the [browser tool](https://mailcheck.agentcartai.com/tools/agent-cost-auditor/?utm_source=github&utm_medium=repository&utm_campaign=agent-cost-auditor), choose the AI system that lost budget, and select its usage folder or export. The result identifies the highest-cost run and the recorded reason before any checkout.
+
+No account or API key is required. Codex and Claude Code users can choose their local sessions folder directly; OpenCode, OpenClaw, Gemini, OpenRouter, Vercel AI Gateway, and generic JSON/JSONL/CSV exports are also supported.
 
 ## Run locally now
 
@@ -48,7 +52,7 @@ Add `--json` for a machine-readable audit and verdict. The CLI performs no netwo
 
 Parsing and the free audit run in the browser. Raw logs, prompts, messages, API keys, wallet secrets, and credentials are not uploaded. The optional evidence-pack checkout sends only a bounded, aliased summary.
 
-The source in `src/auditor.mjs` is the browser module used by the production tool. Review it before selecting any local file.
+The source in `src/auditor.mjs` is the browser module used by the production tool. Its localization dependency is in `src/locale.mjs`. Review both before selecting any local file.
 
 ## Supported inputs
 
@@ -95,7 +99,7 @@ Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
 
 ```text
-https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=31
+https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=34
 ```
 
 ## Limits

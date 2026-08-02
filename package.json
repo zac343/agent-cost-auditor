@@ -1,6 +1,6 @@
 {
   "name": "agent-cost-auditor",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Local AI agent cost audit for retries, fallback, cache misses, failed spend, and hidden usage",
   "type": "module",
   "bin": {
@@ -21,6 +21,7 @@
     "ai-agent",
     "llm",
     "cost-audit",
+    "ai-cost-monitoring",
     "codex",
     "claude-code",
     "opencode",

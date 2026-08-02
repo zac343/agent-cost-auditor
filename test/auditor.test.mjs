@@ -68,6 +68,54 @@ test("parses an OpenCode sanitized export without double-counting its session to
   assert.equal(JSON.stringify(audit).includes("PRIVATE CONTENT"), false);
 });
 
+test("prices independent Anthropic cache counters without charging writes twice", () => {
+  const audit = parseCostUsageText(JSON.stringify([{
+    model: "claude-opus",
+    usage: {
+      input_tokens: 10,
+      output_tokens: 2,
+      cache_read_input_tokens: 20,
+      cache_creation_input_tokens: 30
+    },
+    input_rate_per_million: 1,
+    output_rate_per_million: 10,
+    cached_rate_per_million: 0.1,
+    cache_write_rate_per_million: 2
+  }]), { format: "json" });
+
+  assert.equal(audit.summary.inputTokens, 60);
+  assert.equal(audit.summary.cachedTokens, 20);
+  assert.equal(audit.summary.cacheWriteTokens, 30);
+  assert.equal(audit.summary.totalCostUsd, 0.000092);
+});
+
+test("parses AI SDK 7 nested reasoning and cache token details", () => {
+  const audit = parseCostUsageText(JSON.stringify([{
+    provider: "wafer-ai",
+    model: "zai/glm-5.2-fast",
+    status: "succeeded",
+    usage: {
+      inputTokens: 2_000,
+      inputTokenDetails: {
+        noCacheTokens: 1_000,
+        cacheReadTokens: 900,
+        cacheWriteTokens: 100
+      },
+      outputTokens: 500,
+      outputTokenDetails: {
+        textTokens: 300,
+        reasoningTokens: 200
+      }
+    }
+  }]), { format: "json" });
+
+  assert.equal(audit.summary.inputTokens, 2_000);
+  assert.equal(audit.summary.outputTokens, 500);
+  assert.equal(audit.summary.reasoningTokens, 200);
+  assert.equal(audit.summary.cachedTokens, 900);
+  assert.equal(audit.summary.cacheWriteTokens, 100);
+});
+
 const cliPath = new URL("../bin/agent-cost-audit.mjs", import.meta.url);
 const failedUsage = JSON.stringify({
   provider: "openai",
