@@ -99,7 +99,7 @@ Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
 
 ```text
-https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=34
+https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=35
 ```
 
 ## Limits

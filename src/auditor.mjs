@@ -3828,7 +3828,6 @@ function initializeTool() {
   const sampleButton = document.getElementById("sample-button");
   const quickExampleButton = document.getElementById("quick-example-button");
   const useOwnDataButton = document.getElementById("use-own-data-button");
-  const startAuditButton = document.getElementById("start-audit-button");
   const checkoutButton = document.getElementById("checkout-button");
   let currentAudit = null;
   let currentAuditCanCheckout = false;
@@ -3950,8 +3949,8 @@ function initializeTool() {
     const hasInput = selectedFiles.length > 0 || Boolean(textarea.value.trim());
     auditButton.disabled = !hasInput;
     auditButton.textContent = hasInput
-      ? t("Find what used my credits", "查找异常消耗")
-      : t("Choose usage history to continue", "选择使用记录后继续");
+      ? t("Start free analysis", "开始免费分析")
+      : t("Complete step 2 to analyze", "请先完成第 2 步");
   };
 
   const resetFileSelection = (message = t("No usage history selected yet", "还没有选择使用记录")) => {
@@ -3988,7 +3987,6 @@ function initializeTool() {
     fileButtonLabel.textContent = copy.fileLabel;
     directoryButtonLabel.textContent = copy.directoryLabel;
     useOwnDataButton.textContent = copy.ownDataLabel;
-    startAuditButton.textContent = copy.ownDataLabel;
     const supportsDirectory = usesDirectoryPicker(platform);
     directoryControl.hidden = !supportsDirectory;
     directoryControl.classList.toggle("primary-file-button", supportsDirectory);
@@ -4174,10 +4172,6 @@ function initializeTool() {
   };
   sampleButton.addEventListener("click", () => loadAuditSample("sample"));
   quickExampleButton.addEventListener("click", () => loadAuditSample("sample"));
-  startAuditButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    openCurrentPicker();
-  });
   useOwnDataButton.addEventListener("click", () => {
     syntheticSampleText = "";
     textarea.value = "";
