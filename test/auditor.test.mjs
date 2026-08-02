@@ -27,6 +27,47 @@ test("flags priced failed work without requiring a browser", () => {
   assert.match(buildAuditVerdict(audit).title, /Failed work/);
 });
 
+test("parses an OpenCode sanitized export without double-counting its session total", () => {
+  const audit = parseCostUsageText(JSON.stringify({
+    info: {
+      id: "ses_private",
+      cost: 0.25,
+      tokens: {
+        input: 50,
+        output: 20,
+        reasoning: 5,
+        cache: { read: 100, write: 10 }
+      },
+      model: { providerID: "openrouter", id: "claude-sonnet-4" },
+      time: { created: 1785517200000, updated: 1785517260000 }
+    },
+    messages: [{
+      info: {
+        id: "msg_assistant",
+        role: "assistant",
+        providerID: "openrouter",
+        modelID: "claude-sonnet-4",
+        cost: 0.25,
+        tokens: {
+          input: 50,
+          output: 20,
+          reasoning: 5,
+          cache: { read: 100, write: 10 }
+        },
+        time: { created: 1785517201000, completed: 1785517260000 },
+        finish: "stop"
+      },
+      parts: [{ type: "text", text: "PRIVATE CONTENT" }]
+    }]
+  }));
+
+  assert.equal(audit.recordCount, 1);
+  assert.equal(audit.summary.totalCostUsd, 0.25);
+  assert.equal(audit.summary.inputTokens, 160);
+  assert.equal(audit.summary.cachedTokens, 100);
+  assert.equal(JSON.stringify(audit).includes("PRIVATE CONTENT"), false);
+});
+
 const cliPath = new URL("../bin/agent-cost-audit.mjs", import.meta.url);
 const failedUsage = JSON.stringify({
   provider: "openai",

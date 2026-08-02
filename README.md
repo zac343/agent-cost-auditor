@@ -24,12 +24,20 @@ Piped JSON, JSONL, or CSV is also accepted:
 cat usage.json | npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit --format json -
 ```
 
+OpenCode can create a transcript-redacted session export while preserving its recorded cost and token fields:
+
+```bash
+opencode export --sanitize > session.json
+npm exec --yes --package=github:zac343/agent-cost-auditor -- agent-cost-audit session.json
+```
+
 Add `--json` for a machine-readable audit and verdict. The CLI performs no network requests and prints the production evidence-pack URL only as an optional next step.
 
 ## What it detects
 
 - replayed Codex rollout prefixes and blocking-poll usage
 - Claude Code background or sidechain requests
+- OpenCode session, model, outcome, recorded cost, and token breakdowns
 - duplicate retries and recurring background spend
 - provider switching and hidden model fallback
 - explicit cache reads, low cache reuse, and missing cache evidence
@@ -46,6 +54,7 @@ The source in `src/auditor.mjs` is the browser module used by the production too
 
 - Codex rollout JSONL/NDJSON, including multi-file sessions-folder scans
 - Claude Code JSONL/NDJSON
+- OpenCode `export --sanitize` session JSON
 - OpenClaw session transcripts
 - Gemini usage metadata
 - OpenRouter and Vercel AI Gateway generation exports
@@ -86,7 +95,7 @@ Directory discovery reads only `.jsonl` and `.ndjson` files, follows no symlinks
 `SOURCE_SHA256` records the checksum of the mirrored module. The live script is:
 
 ```text
-https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=30
+https://mailcheck.agentcartai.com/tools/agent-cost-auditor/auditor.mjs?v=31
 ```
 
 ## Limits

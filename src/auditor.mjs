@@ -1622,6 +1622,108 @@ function claudeCodeAssistantRecords(records) {
   });
 }
 
+function isOpenCodeSessionExport(records) {
+  return records.some((record) =>
+    record?.info &&
+    typeof record.info === "object" &&
+    !Array.isArray(record.info) &&
+    Array.isArray(record.messages) &&
+    (
+      (
+        record?.info?.tokens &&
+        typeof record.info.tokens === "object" &&
+        !Array.isArray(record.info.tokens)
+      ) ||
+      record.messages.some((message) =>
+        message?.info?.role === "assistant" &&
+        message?.info?.tokens &&
+        typeof message.info.tokens === "object" &&
+        !Array.isArray(message.info.tokens)
+      )
+    )
+  );
+}
+
+function openCodeUsageRecord(info, sessionInfo, configuredModel) {
+  const tokens = info?.tokens || {};
+  const feature = sessionInfo?.parentID
+    ? "opencode-child-session"
+    : "opencode-main-session";
+  return {
+    record: {
+      timestamp: info?.time?.completed ?? info?.time?.created ?? sessionInfo?.time?.updated,
+      provider: info?.providerID ?? sessionInfo?.model?.providerID,
+      model: info?.modelID ?? sessionInfo?.model?.id,
+      configured_model: configuredModel ?? info?.modelID ?? sessionInfo?.model?.id,
+      agent_id: boundedLabel(sessionInfo?.id, "OpenCode session"),
+      feature,
+      status: info?.error ? "failed" : info?.finish || "completed",
+      error: info?.error ? true : undefined,
+      attempt_id: info?.id ?? sessionInfo?.id,
+      usage: {
+        input_tokens: tokens?.input,
+        output_tokens: tokens?.output,
+        reasoning_tokens: tokens?.reasoning,
+        cache_read_input_tokens: tokens?.cache?.read,
+        cache_write_input_tokens: tokens?.cache?.write
+      },
+      cost_usd: info?.cost
+    },
+    context: { genericUsage: true }
+  };
+}
+
+function openCodeAssistantRecords(records) {
+  const sourceRecords = [];
+  for (const sessionExport of records) {
+    const sessionInfo = sessionExport?.info || {};
+    const messages = Array.isArray(sessionExport?.messages)
+      ? sessionExport.messages
+      : [];
+    const configuredModelByMessage = new Map();
+    for (const message of messages) {
+      if (message?.info?.role !== "user" || !message.info.id) continue;
+      configuredModelByMessage.set(message.info.id, message.info?.model?.modelID);
+    }
+    const assistantMessages = messages.filter((message) =>
+      message?.info?.role === "assistant" &&
+      message?.info?.tokens &&
+      typeof message.info.tokens === "object" &&
+      !Array.isArray(message.info.tokens)
+    );
+    if (assistantMessages.length) {
+      for (const message of assistantMessages) {
+        sourceRecords.push(openCodeUsageRecord(
+          message.info,
+          sessionInfo,
+          configuredModelByMessage.get(message.info.parentID)
+        ));
+      }
+      continue;
+    }
+    if (
+      sessionInfo?.tokens &&
+      typeof sessionInfo.tokens === "object" &&
+      !Array.isArray(sessionInfo.tokens)
+    ) {
+      sourceRecords.push(openCodeUsageRecord(
+        {
+          id: sessionInfo.id,
+          time: { completed: sessionInfo?.time?.updated },
+          providerID: sessionInfo?.model?.providerID,
+          modelID: sessionInfo?.model?.id,
+          finish: "completed",
+          tokens: sessionInfo.tokens,
+          cost: sessionInfo.cost
+        },
+        sessionInfo,
+        sessionInfo?.model?.id
+      ));
+    }
+  }
+  return sourceRecords;
+}
+
 function isCodexRollout(records) {
   return records.some(
     (record) =>
@@ -2348,6 +2450,8 @@ function aggregateParsedCostUsageSources(parsedSources) {
     }
     const sourceRecords = isClaudeCodeTranscript(records)
       ? claudeCodeAssistantRecords(records)
+      : isOpenCodeSessionExport(records)
+        ? openCodeAssistantRecords(records)
       : isOpenClawTranscript(records)
         ? openClawAssistantRecords(records)
         : records.map((record) => ({
@@ -2650,6 +2754,8 @@ export function buildPrivateCheckoutAudit(audit) {
   const safeSystemFeatures = new Set([
     "claude-code-main",
     "claude-code-background",
+    "opencode-main-session",
+    "opencode-child-session",
     "codex-blocking-wait"
   ]);
   const alias = (map, value, prefix) => {
@@ -3017,6 +3123,7 @@ export function buildClearedAuditLocation(value) {
 const COST_AUDIT_PLATFORMS = new Set([
   "codex",
   "claude-code",
+  "opencode",
   "openclaw",
   "gemini",
   "other"
@@ -3592,6 +3699,15 @@ function initializeTool() {
       locationHint: "Mac: press Cmd+Shift+G in the folder picker and paste this path. Windows: use %USERPROFILE%\\.claude\\projects.",
       fileLabel: "Choose individual files instead",
       directoryLabel: "Choose Claude Code usage folder"
+    },
+    opencode: {
+      title: "2. Export one OpenCode session, then choose the JSON file",
+      subtitle: "Run the command below once. OpenCode will ask which session to export.",
+      locationLabel: "Run in Terminal",
+      location: "opencode export --sanitize > session.json",
+      locationHint: "The --sanitize option redacts transcript, file, and path content while keeping cost and token evidence.",
+      fileLabel: "Choose session.json",
+      directoryLabel: ""
     },
     openclaw: {
       title: "2. Choose the affected OpenClaw session",
