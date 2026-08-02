@@ -213,6 +213,7 @@ const FIELD_PATHS = {
   ],
   inputTokens: [
     "input_tokens",
+    "in",
     "In",
     "inputTokens",
     "prompt_tokens",
@@ -221,6 +222,10 @@ const FIELD_PATHS = {
     "promptTokenCount",
     "usage.input_tokens",
     "usage.inputTokens",
+    "totalUsage.inputTokens",
+    "response.usage.input_tokens",
+    "response.usage.inputTokens",
+    "response.totalUsage.inputTokens",
     "usage.prompt_tokens",
     "usage.promptTokens",
     "usage.prompt_token_count",
@@ -231,6 +236,7 @@ const FIELD_PATHS = {
     "message.usage.input",
     "message.usage.input_tokens",
     "message.usage.inputTokens",
+    "message.totalUsage.inputTokens",
     "native_tokens_prompt",
     "tokens_prompt",
     "data.native_tokens_prompt",
@@ -242,10 +248,12 @@ const FIELD_PATHS = {
     "data.usage.input_tokens",
     "data.usage.inputTokens",
     "data.usage.prompt_tokens",
-    "data.usage.promptTokens"
+    "data.usage.promptTokens",
+    "data.totalUsage.inputTokens"
   ],
   outputTokens: [
     "output_tokens",
+    "out",
     "Out",
     "outputTokens",
     "completion_tokens",
@@ -254,6 +262,10 @@ const FIELD_PATHS = {
     "candidatesTokenCount",
     "usage.output_tokens",
     "usage.outputTokens",
+    "totalUsage.outputTokens",
+    "response.usage.output_tokens",
+    "response.usage.outputTokens",
+    "response.totalUsage.outputTokens",
     "usage.completion_tokens",
     "usage.completionTokens",
     "usage.candidates_token_count",
@@ -264,6 +276,7 @@ const FIELD_PATHS = {
     "message.usage.output",
     "message.usage.output_tokens",
     "message.usage.outputTokens",
+    "message.totalUsage.outputTokens",
     "native_tokens_completion",
     "tokens_completion",
     "data.native_tokens_completion",
@@ -275,7 +288,17 @@ const FIELD_PATHS = {
     "data.usage.output_tokens",
     "data.usage.outputTokens",
     "data.usage.completion_tokens",
-    "data.usage.completionTokens"
+    "data.usage.completionTokens",
+    "data.totalUsage.outputTokens",
+    "outputTokenDetails.textTokens",
+    "usage.outputTokenDetails.textTokens",
+    "totalUsage.outputTokenDetails.textTokens",
+    "response.usage.outputTokenDetails.textTokens",
+    "response.totalUsage.outputTokenDetails.textTokens",
+    "message.usage.outputTokenDetails.textTokens",
+    "message.totalUsage.outputTokenDetails.textTokens",
+    "data.usage.outputTokenDetails.textTokens",
+    "data.totalUsage.outputTokenDetails.textTokens"
   ],
   reasoningTokens: [
     "reasoning_tokens",
@@ -286,6 +309,18 @@ const FIELD_PATHS = {
     "usage.reasoningTokens",
     "usage.reasoning_output_tokens",
     "usage.reasoningOutputTokens",
+    "outputTokenDetails.reasoningTokens",
+    "usage.outputTokenDetails.reasoningTokens",
+    "totalUsage.reasoningTokens",
+    "totalUsage.outputTokenDetails.reasoningTokens",
+    "response.usage.reasoningTokens",
+    "response.usage.outputTokenDetails.reasoningTokens",
+    "response.totalUsage.reasoningTokens",
+    "response.totalUsage.outputTokenDetails.reasoningTokens",
+    "message.usage.reasoningTokens",
+    "message.usage.outputTokenDetails.reasoningTokens",
+    "message.totalUsage.reasoningTokens",
+    "message.totalUsage.outputTokenDetails.reasoningTokens",
     "thoughts_token_count",
     "thoughtsTokenCount",
     "usage.thoughts_token_count",
@@ -298,7 +333,10 @@ const FIELD_PATHS = {
     "data.reasoning_tokens",
     "data.reasoningTokens",
     "data.usage.reasoning_tokens",
-    "data.usage.reasoningTokens"
+    "data.usage.reasoningTokens",
+    "data.usage.outputTokenDetails.reasoningTokens",
+    "data.totalUsage.reasoningTokens",
+    "data.totalUsage.outputTokenDetails.reasoningTokens"
   ],
   toolUsePromptTokens: [
     "tool_use_prompt_token_count",
@@ -317,6 +355,7 @@ const FIELD_PATHS = {
     "cache_read_input_tokens",
     "cacheReadInputTokens",
     "cache_read_tokens",
+    "cache_read",
     "cached_content_token_count",
     "cachedContentTokenCount",
     "usage.cached_tokens",
@@ -325,6 +364,15 @@ const FIELD_PATHS = {
     "usage.cachedInputTokens",
     "usage.cache_read_input_tokens",
     "usage.cacheRead",
+    "inputTokenDetails.cacheReadTokens",
+    "usage.inputTokenDetails.cacheReadTokens",
+    "totalUsage.cachedInputTokens",
+    "totalUsage.inputTokenDetails.cacheReadTokens",
+    "response.usage.cachedInputTokens",
+    "response.usage.cache_read_input_tokens",
+    "response.usage.inputTokenDetails.cacheReadTokens",
+    "response.totalUsage.cachedInputTokens",
+    "response.totalUsage.inputTokenDetails.cacheReadTokens",
     "usage.cached_content_token_count",
     "usage.cachedContentTokenCount",
     "usageMetadata.cachedContentTokenCount",
@@ -335,6 +383,10 @@ const FIELD_PATHS = {
     "message.usage.cache_read",
     "message.usage.cache_read_input_tokens",
     "message.usage.cached_tokens",
+    "message.usage.cachedInputTokens",
+    "message.usage.inputTokenDetails.cacheReadTokens",
+    "message.totalUsage.cachedInputTokens",
+    "message.totalUsage.inputTokenDetails.cacheReadTokens",
     "native_tokens_cached",
     "data.native_tokens_cached",
     "data.cached_input_tokens",
@@ -344,47 +396,76 @@ const FIELD_PATHS = {
     "data.usage.cached_tokens",
     "data.usage.cachedTokens",
     "data.usage.cached_input_tokens",
-    "data.usage.cachedInputTokens"
+    "data.usage.cachedInputTokens",
+    "data.usage.inputTokenDetails.cacheReadTokens",
+    "data.totalUsage.cachedInputTokens",
+    "data.totalUsage.inputTokenDetails.cacheReadTokens"
   ],
   cacheWriteTokens: [
     "cache_write_input_tokens",
     "cacheWriteInputTokens",
     "cache_creation_input_tokens",
+    "cache_creation",
     "cacheCreationInputTokens",
     "usage.cache_write_input_tokens",
     "usage.cache_creation_input_tokens",
     "usage.cacheWrite",
+    "inputTokenDetails.cacheWriteTokens",
+    "usage.inputTokenDetails.cacheWriteTokens",
+    "totalUsage.inputTokenDetails.cacheWriteTokens",
+    "response.usage.inputTokenDetails.cacheWriteTokens",
+    "response.usage.cache_creation_input_tokens",
+    "response.totalUsage.inputTokenDetails.cacheWriteTokens",
     "message.usage.cacheWrite",
     "message.usage.cache_write",
     "message.usage.cache_creation_input_tokens",
+    "message.usage.inputTokenDetails.cacheWriteTokens",
+    "message.totalUsage.inputTokenDetails.cacheWriteTokens",
     "data.cache_write_input_tokens",
     "data.cacheWriteInputTokens",
     "data.cache_creation_input_tokens",
     "data.cacheCreationInputTokens",
     "data.usage.cache_write_input_tokens",
-    "data.usage.cache_creation_input_tokens"
+    "data.usage.cache_creation_input_tokens",
+    "data.usage.inputTokenDetails.cacheWriteTokens",
+    "data.totalUsage.inputTokenDetails.cacheWriteTokens"
   ],
   costUsd: [
     "cost_usd",
+    "observed_cost_usd",
     "Cost",
     "costUsd",
     "total_cost",
     "totalCost",
     "response_cost",
     "responseCost",
+    "usage.cost.total",
     "usage.cost",
     "usage.cost_usd",
+    "response.usage.cost.total",
+    "response.usage.cost",
+    "response.usage.cost_usd",
     "message.usage.cost.total",
     "message.usage.cost_usd",
     "metadata.cost_usd",
     "data.cost_usd",
+    "data.observed_cost_usd",
     "data.costUsd",
     "data.total_cost",
     "data.totalCost",
     "data.response_cost",
     "data.responseCost",
+    "data.usage.cost.total",
     "data.usage.cost",
     "data.usage.cost_usd"
+  ],
+  costEvaluable: [
+    "cost_evaluable",
+    "costEvaluable",
+    "metadata.cost_evaluable",
+    "metadata.costEvaluable",
+    "data.cost_evaluable",
+    "data.costEvaluable"
   ],
   inputRate: [
     "input_rate_per_million",
@@ -406,6 +487,32 @@ const FIELD_PATHS = {
     "cache_write_rate_per_million",
     "cacheWriteRatePerMillion",
     "pricing.cache_write_per_million"
+  ],
+  usageIdentity: [
+    "attempt_id",
+    "attemptId",
+    "response_id",
+    "responseId",
+    "completion_id",
+    "completionId",
+    "generation_id",
+    "generationId",
+    "event_id",
+    "eventId",
+    "message.id",
+    "response.id",
+    "metadata.attempt_id",
+    "metadata.attemptId",
+    "metadata.response_id",
+    "metadata.responseId",
+    "data.attempt_id",
+    "data.attemptId",
+    "data.response_id",
+    "data.responseId",
+    "data.completion_id",
+    "data.completionId",
+    "data.generation_id",
+    "data.generationId"
   ],
   timestamp: [
     "timestamp",
@@ -593,6 +700,70 @@ const SPARKY_GEMINI_CACHE_SAMPLE_RECORDS = [
   }
 ];
 
+const VERCEL_GATEWAY_REASONING_SAMPLE_RECORDS = [
+  ["2026-08-02T00:00:00Z", "wafer-ai", 5_600, 900, 640],
+  ["2026-08-02T00:01:00Z", "fireworks-ai", 6_200, 1_100, 780],
+  ["2026-08-02T00:02:00Z", "wafer-ai", 6_800, 1_300, 920]
+].map(([timestamp, provider, inputTokens, outputTokens, reasoningTokens], index) => ({
+  id: `sample-reasoning-disabled-step-${index + 1}`,
+  timestamp,
+  provider,
+  model: "zai/glm-5.2-fast",
+  configured_model: "zai/glm-5.2-fast",
+  agent_id: "multi-step-agent",
+  feature: "reasoning-disabled-control",
+  status: "succeeded",
+  requested_reasoning: "none",
+  usage: {
+    inputTokens,
+    inputTokenDetails: {
+      noCacheTokens: inputTokens,
+      cacheReadTokens: 0,
+      cacheWriteTokens: 0
+    },
+    outputTokens,
+    outputTokenDetails: {
+      textTokens: outputTokens - reasoningTokens,
+      reasoningTokens
+    }
+  }
+}));
+
+const CLAUDE_BACKGROUND_RUNAWAY_SAMPLE_RECORDS = [
+  122_600,
+  130_300,
+  102_900,
+  71_800,
+  118_500,
+  98_300,
+  126_500,
+  76_000,
+  129_700,
+  99_300
+].map((inputTokens, index) => ({
+  type: "assistant",
+  uuid: `sample-claude-background-${index + 1}`,
+  requestId: `sample-background-request-${index + 1}`,
+  sessionId: "sample-runaway-background-session",
+  isSidechain: true,
+  timestamp: new Date(
+    Date.parse("2026-07-30T00:00:00Z") + index * 60 * 60 * 1000
+  ).toISOString(),
+  message: {
+    id: `sample-background-message-${index + 1}`,
+    role: "assistant",
+    model: "unknown-background-model",
+    stop_reason: "end_turn",
+    content: [{ type: "text", text: "redacted" }],
+    usage: {
+      input_tokens: inputTokens,
+      cache_creation_input_tokens: 0,
+      cache_read_input_tokens: 0,
+      output_tokens: 0
+    }
+  }
+}));
+
 const PERIODIC_SPEND_SAMPLE_RECORDS = [
   ["2026-07-08T14:02:00Z", 63_981, 20, 0.2001],
   ["2026-07-08T14:32:00Z", 64_039, 31, 0.2004],
@@ -606,6 +777,23 @@ const PERIODIC_SPEND_SAMPLE_RECORDS = [
   agent_id: "background-runner",
   feature: "go-plan-scheduled-call",
   status: "succeeded",
+  input_tokens: inputTokens,
+  output_tokens: outputTokens,
+  cost_usd: costUsd
+}));
+
+const OPENCODE_FILTERED_SPEND_SAMPLE_RECORDS = [
+  ["2026-07-05T21:00:00Z", 534_929, 1, 6.69],
+  ["2026-07-05T21:01:00Z", 534_963, 1, 6.69],
+  ["2026-07-05T21:02:00Z", 534_982, 5, 6.68]
+].map(([timestamp, inputTokens, outputTokens, costUsd], index) => ({
+  id: `sample-opencode-filtered-spend-${index + 1}`,
+  timestamp,
+  provider: "opencode-zen",
+  model: "claude-fable-5",
+  agent_id: "redacted-agent",
+  feature: "content-filtered-response",
+  status: "content-filter",
   input_tokens: inputTokens,
   output_tokens: outputTokens,
   cost_usd: costUsd
@@ -679,12 +867,48 @@ const PERIODIC_SPEND_CAMPAIGNS = new Set([
   "opencode_recurring_billing_36399"
 ]);
 
+const OPENCODE_FILTERED_SPEND_CAMPAIGNS = new Set([
+  "opencode_content_filter_spend_35475"
+]);
+
 const OPENCLAW_UNEXPECTED_MODEL_CAMPAIGNS = new Set([
   "openclaw_unexpected_opus_113080"
 ]);
 
+const VERCEL_GATEWAY_REASONING_CAMPAIGNS = new Set([
+  "vercel_gateway_reasoning_17505",
+  "vercel-gateway-reasoning-17505"
+]);
+
+const CLAUDE_BACKGROUND_RUNAWAY_CAMPAIGNS = new Set([
+  "claude_background_runaway_75314",
+  "claude-background-runaway-75314"
+]);
+
 export function resolveAuditSample(campaign) {
   const normalized = String(campaign || "").trim().toLowerCase();
+  if (CLAUDE_BACKGROUND_RUNAWAY_CAMPAIGNS.has(normalized)) {
+    return {
+      autoPreview: true,
+      platform: "claude-code",
+      records: CLAUDE_BACKGROUND_RUNAWAY_SAMPLE_RECORDS,
+      title: "See the 10 runaway Claude Code background tasks",
+      detail: "The public task totals add up to 1,075,900 recorded prompt tokens across 10 background requests. The exact dollar amount remains unknown because the issue did not include trusted price data.",
+      button: "Run the background-task example",
+      note: "Synthetic rows preserve only the published per-task token totals. Choose your local ~/.claude/projects folder before using the result as quota or refund evidence."
+    };
+  }
+  if (VERCEL_GATEWAY_REASONING_CAMPAIGNS.has(normalized)) {
+    return {
+      autoPreview: true,
+      platform: "other",
+      records: VERCEL_GATEWAY_REASONING_SAMPLE_RECORDS,
+      title: "See reasoning-disabled requests that still report reasoning tokens",
+      detail: "All three illustrative AI SDK 7 rows request reasoning: none, yet they report 2,340 nested reasoning tokens across Wafer AI and Fireworks AI.",
+      button: "Run the AI SDK 7 example",
+      note: "Synthetic data shaped from the public incident. Replace it with the same prompt and tool sequence through each provider before using the result as billing evidence."
+    };
+  }
   if (SPARKY_GEMINI_CACHE_CAMPAIGNS.has(normalized)) {
     return {
       autoPreview: true,
@@ -718,6 +942,17 @@ export function resolveAuditSample(campaign) {
       note: "Synthetic data shaped from the public incident; replace it with a bounded local transcript and billing window for actual evidence."
     };
   }
+  if (OPENCODE_FILTERED_SPEND_CAMPAIGNS.has(normalized)) {
+    return {
+      autoPreview: true,
+      platform: "other",
+      records: OPENCODE_FILTERED_SPEND_SAMPLE_RECORDS,
+      title: "See three billed, content-filtered calls immediately",
+      detail: "This three-call example preserves 1,604,874 input tokens, 7 output tokens, and $20.06 of spend even though every response ended as content-filtered.",
+      button: "Run the filtered-spend example",
+      note: "Synthetic data shaped from the public incident. Per-call amounts are rounded to the published $20.06 aggregate; replace the sample with your own export before using it as refund evidence."
+    };
+  }
   if (PERIODIC_SPEND_CAMPAIGNS.has(normalized)) {
     return {
       autoPreview: true,
@@ -744,22 +979,37 @@ export function resolveAuditSample(campaign) {
     autoPreview: false,
     platform: "openclaw",
     records: SAMPLE_RECORDS,
-    title: "See the evidence before choosing a file",
-    detail: "Run a redacted local example to preview fallback, failed spend, unmetered tool use, cache, and cost grouping.",
-    button: "Run the redacted example",
-    note: "Example data is synthetic and is never counted as a real external audit."
+    title: "A failed retry used $0.0184",
+    detail: "This tiny example shows the same answer format you will get from your own records.",
+    button: "Show me the example",
+    note: "Example data only. It is never counted as a customer analysis."
   };
 }
 
 export function resolveAuditRunPolicy(source = "user") {
   if (source === "user") {
-    return { trackSampleClick: false, trackCompletion: true, allowCheckout: true };
+    return {
+      trackSampleClick: false,
+      trackCompletion: true,
+      trackJourney: true,
+      allowCheckout: true
+    };
   }
   if (source === "sample") {
-    return { trackSampleClick: true, trackCompletion: false, allowCheckout: false };
+    return {
+      trackSampleClick: true,
+      trackCompletion: false,
+      trackJourney: false,
+      allowCheckout: false
+    };
   }
   if (source === "campaign_preview") {
-    return { trackSampleClick: false, trackCompletion: false, allowCheckout: false };
+    return {
+      trackSampleClick: false,
+      trackCompletion: false,
+      trackJourney: false,
+      allowCheckout: false
+    };
   }
   throw new Error("Unsupported audit run source.");
 }
@@ -808,6 +1058,36 @@ function integerValue(value) {
   return number === null ? 0 : Math.min(Math.round(number), 1_000_000_000_000_000);
 }
 
+function isExplicitFalse(value) {
+  if (value === false || value === 0) return true;
+  return typeof value === "string" && /^(?:false|0|no)$/i.test(value.trim());
+}
+
+function hasIndependentCacheTokenCounters(record) {
+  const containers = [
+    record,
+    record?.usage,
+    record?.response?.usage,
+    record?.message?.usage,
+    record?.data,
+    record?.data?.usage
+  ];
+  const inputFields = ["input_tokens", "in"];
+  const cacheFields = [
+    "cache_read_input_tokens",
+    "cache_creation_input_tokens",
+    "cache_read",
+    "cache_creation"
+  ];
+  return containers.some((container) =>
+    container &&
+    typeof container === "object" &&
+    !Array.isArray(container) &&
+    inputFields.some((field) => Object.hasOwn(container, field)) &&
+    cacheFields.some((field) => Object.hasOwn(container, field))
+  );
+}
+
 function normalizedStatus(record) {
   if (record?.cancelled === true || record?.data?.cancelled === true) {
     return "cancelled";
@@ -827,7 +1107,7 @@ function normalizedStatus(record) {
     return "failed";
   }
   const raw = boundedLabel(firstValue(record, FIELD_PATHS.status), "unknown").toLowerCase();
-  if (/(?:fail|error|reject|timeout|block|filter|denied|safety|moderation)/.test(raw)) {
+  if (/(?:fail|error|reject|time(?:d)?[_ -]?out|block|filter|denied|safety|moderation)/.test(raw)) {
     return "failed";
   }
   if (/(?:cancel|abort)/.test(raw)) return "cancelled";
@@ -881,7 +1161,15 @@ function normalizedTimestamp(record) {
   return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
 }
 
+function stableUsageIdentity(record) {
+  const value = firstValue(record, FIELD_PATHS.usageIdentity);
+  if (value === undefined || (value && typeof value === "object")) return null;
+  const normalized = String(value).trim();
+  return normalized && normalized.length <= 512 ? normalized : null;
+}
+
 function explicitOrCalculatedCost(record, tokens) {
+  if (isExplicitFalse(firstValue(record, FIELD_PATHS.costEvaluable))) return null;
   const explicit = finiteNumber(firstValue(record, FIELD_PATHS.costUsd));
   if (explicit !== null) return explicit;
   const inputRate = finiteNumber(firstValue(record, FIELD_PATHS.inputRate));
@@ -889,7 +1177,10 @@ function explicitOrCalculatedCost(record, tokens) {
   const cachedRate = finiteNumber(firstValue(record, FIELD_PATHS.cachedRate));
   const cacheWriteRate = finiteNumber(firstValue(record, FIELD_PATHS.cacheWriteRate));
   if (inputRate === null || outputRate === null) return null;
-  const uncachedInput = Math.max(0, tokens.inputTokens - tokens.cachedTokens);
+  const uncachedInput = Math.max(
+    0,
+    tokens.inputTokens - tokens.cachedTokens - tokens.cacheWriteTokens
+  );
   return (
     uncachedInput * inputRate +
     tokens.outputTokens * outputRate +
@@ -904,7 +1195,7 @@ function normalizedRecord(record, context = {}) {
   if (!record || typeof record !== "object" || Array.isArray(record)) {
     throw new Error("Each usage row must be an object.");
   }
-  const inputTokens = integerValue(firstValue(record, FIELD_PATHS.inputTokens));
+  const baseInputTokens = integerValue(firstValue(record, FIELD_PATHS.inputTokens));
   const outputTokens = integerValue(firstValue(record, FIELD_PATHS.outputTokens));
   const reasoningTokens = integerValue(firstValue(record, FIELD_PATHS.reasoningTokens));
   const toolUsePromptTokens = integerValue(
@@ -913,6 +1204,9 @@ function normalizedRecord(record, context = {}) {
   const rawCachedTokens = firstValue(record, FIELD_PATHS.cachedTokens);
   const cachedTokens = integerValue(rawCachedTokens);
   const cacheWriteTokens = integerValue(firstValue(record, FIELD_PATHS.cacheWriteTokens));
+  const inputTokens = hasIndependentCacheTokenCounters(record)
+    ? integerValue(baseInputTokens + cachedTokens + cacheWriteTokens)
+    : baseInputTokens;
   const toolUseRecord = isToolUseRecord(record);
   const unmeteredToolUseRecord =
     toolUseRecord &&
@@ -978,8 +1272,44 @@ function normalizedRecord(record, context = {}) {
     emptyBlockingWaitCalls,
     blockingWaitRequestedMs,
     timestamp: normalizedTimestamp(record),
-    replayedUsage: context.replayedUsage === true
+    replayedUsage: context.replayedUsage === true,
+    duplicateUsage: context.duplicateUsage === true
   };
+}
+
+function genericDuplicateSignature(sourceRecord) {
+  if (sourceRecord?.context?.genericUsage !== true) return null;
+  const identity = stableUsageIdentity(sourceRecord.record);
+  if (!identity) return null;
+  const record = normalizedRecord(sourceRecord.record, sourceRecord.context);
+  return JSON.stringify([
+    identity,
+    record.provider,
+    record.model,
+    record.configuredModel,
+    record.actualModel,
+    record.status,
+    record.inputTokens,
+    record.outputTokens,
+    record.reasoningTokens,
+    record.toolUsePromptTokens,
+    record.cachedTokens,
+    record.cacheWriteTokens,
+    record.costUsd
+  ]);
+}
+
+function markGenericDuplicateUsage(sourceRecords) {
+  const seen = new Set();
+  for (const sourceRecord of sourceRecords) {
+    const signature = genericDuplicateSignature(sourceRecord);
+    if (!signature) continue;
+    if (seen.has(signature)) {
+      sourceRecord.context.duplicateUsage = true;
+    } else {
+      seen.add(signature);
+    }
+  }
 }
 
 function median(values) {
@@ -1090,12 +1420,16 @@ export function summarizeCacheEvidence(groups) {
   let failedCostUsd = 0;
 
   for (const group of groups || []) {
+    const effectiveRecords = Math.max(
+      0,
+      Number(group?.records || 0) - Number(group?.duplicateUsageRecords || 0)
+    );
     const provider = String(group?.provider || "unknown").trim();
     if (provider && provider.toLowerCase() !== "unknown") providerNames.add(provider.toLowerCase());
     if (["failed", "cancelled"].includes(group?.status)) {
       failedCostUsd += Number(group?.costUsd || 0);
     }
-    const records = Number(group?.records || 0);
+    const records = effectiveRecords;
     const observedRecords = Number(group?.cacheReadObservedRecords || 0);
     totalRecords += records;
     if (observedRecords > 0) {
@@ -1264,8 +1598,6 @@ function claudeCodeAssistantRecords(records) {
 
   return [...requests.values()].map(({ record, contentTypes, background }) => {
     const usage = record.message.usage;
-    const cacheRead = integerValue(usage.cache_read_input_tokens);
-    const cacheWrite = integerValue(usage.cache_creation_input_tokens);
     return {
       record: {
         timestamp: record.timestamp,
@@ -1279,9 +1611,9 @@ function claudeCodeAssistantRecords(records) {
           content: [...contentTypes].map((type) => ({ type })),
           usage: {
             ...usage,
-            input_tokens: integerValue(usage.input_tokens) + cacheRead + cacheWrite,
-            cache_read_input_tokens: cacheRead,
-            cache_creation_input_tokens: cacheWrite
+            input_tokens: integerValue(usage.input_tokens),
+            cache_read_input_tokens: integerValue(usage.cache_read_input_tokens),
+            cache_creation_input_tokens: integerValue(usage.cache_creation_input_tokens)
           }
         }
       },
@@ -1677,6 +2009,8 @@ function aggregateRecords(sourceRecords, sourceFormat) {
       cacheReadObservedRecords: 0,
       cacheReadObservedInputTokens: 0,
       replayedUsageRecords: 0,
+      duplicateUsageRecords: 0,
+      duplicatePricedRecords: 0,
       backgroundRecords: 0,
       blockingWaitRecords: 0,
       blockingWaitCalls: 0,
@@ -1693,6 +2027,13 @@ function aggregateRecords(sourceRecords, sourceFormat) {
       replayedReasoningTokens: 0,
       replayedCachedTokens: 0,
       replayedCacheWriteTokens: 0,
+      duplicateInputTokens: 0,
+      duplicateOutputTokens: 0,
+      duplicateReasoningTokens: 0,
+      duplicateToolUsePromptTokens: 0,
+      duplicateCachedTokens: 0,
+      duplicateCacheWriteTokens: 0,
+      duplicateCostUsd: 0,
       backgroundInputTokens: 0,
       backgroundOutputTokens: 0,
       backgroundCachedTokens: 0,
@@ -1705,6 +2046,21 @@ function aggregateRecords(sourceRecords, sourceFormat) {
       costUsd: 0
     };
     group.records += 1;
+    if (record.duplicateUsage) {
+      group.duplicateUsageRecords += 1;
+      group.duplicateInputTokens += record.inputTokens;
+      group.duplicateOutputTokens += record.outputTokens;
+      group.duplicateReasoningTokens += record.reasoningTokens;
+      group.duplicateToolUsePromptTokens += record.toolUsePromptTokens;
+      group.duplicateCachedTokens += record.cachedTokens;
+      group.duplicateCacheWriteTokens += record.cacheWriteTokens;
+      if (record.costUsd !== null) {
+        group.duplicatePricedRecords += 1;
+        group.duplicateCostUsd += record.costUsd;
+      }
+      groups.set(key, group);
+      continue;
+    }
     group.toolUseRecords += record.toolUseRecord ? 1 : 0;
     group.unmeteredToolUseRecords += record.unmeteredToolUseRecord ? 1 : 0;
     group.reasoningTokenRecords += record.reasoningTokenRecord ? 1 : 0;
@@ -1753,7 +2109,8 @@ function aggregateRecords(sourceRecords, sourceFormat) {
   const normalizedGroups = [...groups.values()]
     .map((group) => ({
       ...group,
-      costUsd: group.pricedRecords ? Math.round(group.costUsd * 1_000_000) / 1_000_000 : null
+      costUsd: group.pricedRecords ? Math.round(group.costUsd * 1_000_000) / 1_000_000 : null,
+      duplicateCostUsd: Math.round(group.duplicateCostUsd * 1_000_000) / 1_000_000
     }))
     .sort((left, right) => Number(right.costUsd || 0) - Number(left.costUsd || 0));
   const totalCostUsd = normalizedGroups.reduce(
@@ -1777,26 +2134,46 @@ function aggregateRecords(sourceRecords, sourceFormat) {
     (total, group) => total + group.replayedUsageRecords,
     0
   );
+  const duplicateUsageRecords = normalizedGroups.reduce(
+    (total, group) => total + group.duplicateUsageRecords,
+    0
+  );
+  const duplicateCostUsd = normalizedGroups.reduce(
+    (total, group) => total + Number(group.duplicateCostUsd || 0),
+    0
+  );
+  const effectiveRecords = sourceRecords.length - duplicateUsageRecords;
   const fallbackRecords = normalizedGroups
     .filter((group) =>
       group.configuredModel !== "unknown" &&
       group.configuredModel.toLowerCase() !== group.actualModel.toLowerCase()
     )
-    .reduce((total, group) => total + group.records, 0);
+    .reduce(
+      (total, group) => total + group.records - group.duplicateUsageRecords,
+      0
+    );
   const failedOrCancelledRecords = normalizedGroups
     .filter((group) =>
       ["failed", "cancelled"].includes(group.status) &&
       (group.inputTokens + group.outputTokens > 0 || Number(group.costUsd || 0) > 0)
     )
-    .reduce((total, group) => total + group.records, 0);
+    .reduce(
+      (total, group) => total + group.records - group.duplicateUsageRecords,
+      0
+    );
   const unattributedRecords = normalizedGroups
     .filter((group) =>
       ["unattributed", "unknown"].includes(group.agent.toLowerCase()) ||
       ["unattributed", "unknown"].includes(group.feature.toLowerCase())
     )
-    .reduce((total, group) => total + group.records, 0);
+    .reduce(
+      (total, group) => total + group.records - group.duplicateUsageRecords,
+      0
+    );
   const cacheEvidence = summarizeCacheEvidence(normalizedGroups);
-  const periodicSpend = summarizePeriodicSpend(normalizedRecords);
+  const periodicSpend = summarizePeriodicSpend(
+    normalizedRecords.filter((record) => !record.duplicateUsage)
+  );
   return {
     schemaVersion: 1,
     sourceFormat,
@@ -1808,11 +2185,13 @@ function aggregateRecords(sourceRecords, sourceFormat) {
     summary: {
       totalCostUsd: Math.round(totalCostUsd * 1_000_000) / 1_000_000,
       pricedRecords,
-      unpricedRecords: sourceRecords.length - pricedRecords,
+      unpricedRecords: effectiveRecords - pricedRecords,
       toolUseRecords,
       unmeteredToolUseRecords,
       reasoningTokenRecords,
       replayedUsageRecords,
+      duplicateUsageRecords,
+      duplicateCostUsd: Math.round(duplicateCostUsd * 1_000_000) / 1_000_000,
       backgroundRecords: normalizedGroups.reduce(
         (total, group) => total + group.backgroundRecords,
         0
@@ -1833,7 +2212,9 @@ function aggregateRecords(sourceRecords, sourceFormat) {
         (total, group) => total + group.blockingWaitRequestedMs,
         0
       ),
-      uniqueUsageRecords: sourceRecords.length - replayedUsageRecords,
+      deduplicatedUsageRecords: effectiveRecords,
+      uniqueUsageRecords:
+        sourceRecords.length - replayedUsageRecords - duplicateUsageRecords,
       fallbackRecords,
       failedOrCancelledRecords,
       failedCostUsd: cacheEvidence.failedCostUsd,
@@ -1892,6 +2273,30 @@ function aggregateRecords(sourceRecords, sourceFormat) {
         (total, group) => total + group.replayedCacheWriteTokens,
         0
       ),
+      duplicateInputTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateInputTokens,
+        0
+      ),
+      duplicateOutputTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateOutputTokens,
+        0
+      ),
+      duplicateReasoningTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateReasoningTokens,
+        0
+      ),
+      duplicateToolUsePromptTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateToolUsePromptTokens,
+        0
+      ),
+      duplicateCachedTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateCachedTokens,
+        0
+      ),
+      duplicateCacheWriteTokens: normalizedGroups.reduce(
+        (total, group) => total + group.duplicateCacheWriteTokens,
+        0
+      ),
       backgroundInputTokens: normalizedGroups.reduce(
         (total, group) => total + group.backgroundInputTokens,
         0
@@ -1945,7 +2350,10 @@ function aggregateParsedCostUsageSources(parsedSources) {
       ? claudeCodeAssistantRecords(records)
       : isOpenClawTranscript(records)
         ? openClawAssistantRecords(records)
-        : records.map((record) => ({ record, context: {} }));
+        : records.map((record) => ({
+            record,
+            context: { genericUsage: true }
+          }));
     if (!sourceRecords.length) {
       throw new Error(`Usage source ${sourceIndex + 1} has no assistant usage records.`);
     }
@@ -1962,6 +2370,7 @@ function aggregateParsedCostUsageSources(parsedSources) {
     throw new Error(`The local analyzer accepts at most ${MAX_RECORDS.toLocaleString()} records.`);
   }
   markCodexReplayPrefixes(sourceSets);
+  markGenericDuplicateUsage(sourceRecords);
   const formats = new Set(sourceSets.map((source) => source.format));
   const sourceFormat = formats.size === 1 ? sourceSets[0].format : "mixed";
   return aggregateRecords(sourceRecords, sourceFormat);
@@ -2283,6 +2692,8 @@ export function buildPrivateCheckoutAudit(audit) {
       "cacheReadObservedRecords",
       "cacheReadObservedInputTokens",
       "replayedUsageRecords",
+      "duplicateUsageRecords",
+      "duplicatePricedRecords",
       "backgroundRecords",
       "blockingWaitRecords",
       "blockingWaitCalls",
@@ -2299,6 +2710,13 @@ export function buildPrivateCheckoutAudit(audit) {
       "replayedReasoningTokens",
       "replayedCachedTokens",
       "replayedCacheWriteTokens",
+      "duplicateInputTokens",
+      "duplicateOutputTokens",
+      "duplicateReasoningTokens",
+      "duplicateToolUsePromptTokens",
+      "duplicateCachedTokens",
+      "duplicateCacheWriteTokens",
+      "duplicateCostUsd",
       "backgroundInputTokens",
       "backgroundOutputTokens",
       "backgroundCachedTokens",
@@ -2390,6 +2808,13 @@ export function encodeErc20Transfer(recipientAddress, amountMinor) {
 
 function findingRows(audit) {
   const findings = [];
+  if (audit.summary.duplicateUsageRecords) {
+    findings.push([
+      "Critical",
+      "Exact duplicate provider rows were excluded from the cost total",
+      audit.summary.duplicateUsageRecords
+    ]);
+  }
   if (audit.summary.replayedUsageRecords) {
     findings.push([
       "Critical",
@@ -2400,7 +2825,7 @@ function findingRows(audit) {
   if (audit.summary.unmeteredToolUseRecords) {
     findings.push([
       "Critical",
-      "Tool-loop records have no observable usage; displayed cost is a lower bound",
+      "Some tool activity has no usage data, so the total may be too low",
       audit.summary.unmeteredToolUseRecords
     ]);
   }
@@ -2419,7 +2844,7 @@ function findingRows(audit) {
     ]);
   }
   if (audit.summary.fallbackRecords) {
-    findings.push(["Critical", "Configured model differs from the billed model", audit.summary.fallbackRecords]);
+    findings.push(["Critical", "A different model was used than the one selected", audit.summary.fallbackRecords]);
   }
   if (audit.summary.backgroundRecords) {
     findings.push([
@@ -2434,6 +2859,9 @@ function findingRows(audit) {
       `A repeated workload crossed up to ${number(audit.summary.maxProvidersPerWorkload)} providers`,
       audit.summary.providerFragmentationRecords
     ]);
+  }
+  if (audit.summary.unpricedRecords) {
+    findings.push(["High", "Some records have no reliable price", audit.summary.unpricedRecords]);
   }
   if (
     audit.summary.cacheReadObservedRecords > 0 &&
@@ -2460,10 +2888,7 @@ function findingRows(audit) {
     ]);
   }
   if (audit.summary.failedOrCancelledRecords) {
-    findings.push(["High", "Failed or cancelled requests still consumed usage", audit.summary.failedOrCancelledRecords]);
-  }
-  if (audit.summary.unpricedRecords) {
-    findings.push(["High", "Usage rows have no trusted cost or rate", audit.summary.unpricedRecords]);
+    findings.push(["High", "Failed or cancelled requests still cost usage", audit.summary.failedOrCancelledRecords]);
   }
   if (audit.summary.unattributedRecords) {
     findings.push(["Medium", "Usage cannot be assigned to an agent or feature", audit.summary.unattributedRecords]);
@@ -2474,13 +2899,20 @@ function findingRows(audit) {
     audit.summary.totalCostUsd > 0 &&
     Number(top?.costUsd || 0) / audit.summary.totalCostUsd >= 0.5
   ) {
-    findings.push(["Medium", "One workload dominates priced spend", top.records]);
+    findings.push(["Medium", "One session or task used most of the recorded spend", top.records]);
   }
   return findings;
 }
 
 export function buildAuditVerdict(audit) {
   const summary = audit?.summary || {};
+  if (summary.duplicateUsageRecords > 0) {
+    return {
+      tone: "critical",
+      title: "Exact duplicate usage rows were excluded",
+      detail: `${number(summary.duplicateUsageRecords)} rows reused the same stable attempt or response ID with identical model, status, token, and cost values. ${money(summary.duplicateCostUsd)} of repeated recorded cost was excluded. Root request IDs alone are not deduplicated, so distinct primary and fallback attempts stay separate.`
+    };
+  }
   if (summary.replayedUsageRecords > 0) {
     const replayedTokens =
       Number(summary.replayedInputTokens || 0) +
@@ -2495,8 +2927,8 @@ export function buildAuditVerdict(audit) {
     const records = Number(summary.unmeteredToolUseRecords);
     return {
       tone: "critical",
-      title: "The visible total is a lower bound",
-      detail: `${number(records)} tool-use record${records === 1 ? "" : "s"} ${records === 1 ? "has" : "have"} no observable usage. Capture provider usage for ${records === 1 ? "that turn" : "those turns"} before using the displayed total in a billing claim.`
+      title: "Some AI activity has no usage data",
+      detail: `${number(records)} tool action${records === 1 ? "" : "s"} ${records === 1 ? "has" : "have"} no tokens or cost in these files, so the total shown may be too low. Check the provider usage page for the same time before disputing the bill.`
     };
   }
   if (summary.fallbackRecords > 0) {
@@ -2533,6 +2965,13 @@ export function buildAuditVerdict(audit) {
       detail: `${number(summary.providerFragmentationRecords)} high-input records report multiple providers and a ${percent(summary.lowCacheReuseRatio ?? summary.cacheReadRatio)} cache-read ratio. Provider-local cache may be fragmented; compare the same bounded task with provider pinning before assigning causality.`
     };
   }
+  if (summary.unpricedRecords > 0) {
+    return {
+      tone: "warning",
+      title: "Usage is visible, but the exact bill is not reconstructable yet",
+      detail: `${number(summary.unpricedRecords)} records have no trusted cost or effective rate. The token evidence is usable, but exact currency claims require provider pricing or an invoice for the same interval.`
+    };
+  }
   if (summary.cacheReadObservedRecords > 0 && summary.cacheReadMissingRecords > 0) {
     return {
       tone: "warning",
@@ -2559,13 +2998,6 @@ export function buildAuditVerdict(audit) {
       tone: "warning",
       title: "Failed work still consumed recorded usage",
       detail: `${number(summary.failedOrCancelledRecords)} failed or cancelled records contain tokens or cost. Preserve their terminal usage and cap the retry path before another run.`
-    };
-  }
-  if (summary.unpricedRecords > 0) {
-    return {
-      tone: "warning",
-      title: "Usage is visible, but the exact bill is not reconstructable yet",
-      detail: `${number(summary.unpricedRecords)} records have no trusted cost or effective rate. The token evidence is usable, but exact currency claims require provider pricing or an invoice for the same interval.`
     };
   }
   return {
@@ -2647,6 +3079,7 @@ export function resetAuditUi(root) {
   hide("audit-results", true);
   hide("checkout-section", true);
   hide("finding-count", true);
+  hide("group-section", true);
 
   text("finding-count", "");
   text("audit-verdict-title", "");
@@ -2656,6 +3089,7 @@ export function resetAuditUi(root) {
   text("metric-providers", "0");
   text("metric-cache", "Not reported");
   text("metric-unpriced", "0");
+  text("metric-duplicates", "0");
   text("metric-replayed", "0");
   text("metric-blocking-waits", "0");
   text("metric-failed", "$0");
@@ -2678,6 +3112,7 @@ function renderLocalAudit(
   setHidden("audit-empty", true);
   setHidden("audit-results", false);
   setHidden("checkout-section", !allowCheckout);
+  setHidden("group-section", false);
   setText("metric-records", number(audit.recordCount));
   setText("metric-cost", money(audit.summary.totalCostUsd));
   setText("metric-providers", number(audit.summary.providerCount));
@@ -2688,6 +3123,7 @@ function renderLocalAudit(
       : "Not reported"
   );
   setText("metric-unpriced", number(audit.summary.unpricedRecords));
+  setText("metric-duplicates", number(audit.summary.duplicateUsageRecords));
   setText("metric-replayed", number(audit.summary.replayedUsageRecords));
   setText(
     "metric-blocking-waits",
@@ -2707,7 +3143,7 @@ function renderLocalAudit(
   setText("audit-verdict-title", verdict.title);
   setText("audit-verdict-detail", verdict.detail);
   const findings = findingRows(audit);
-  setText("finding-count", `${findings.length} finding${findings.length === 1 ? "" : "s"}`);
+  setText("finding-count", `${findings.length} issue${findings.length === 1 ? "" : "s"} found`);
   setHidden("finding-count", false);
   const list = document.getElementById("finding-list");
   list.replaceChildren(...findings.map(([severity, title, records]) => {
@@ -2733,7 +3169,9 @@ function renderLocalAudit(
       group.feature,
       group.actualModel,
       group.status,
-      number(group.records),
+      group.duplicateUsageRecords > 0
+        ? `${number(group.records - group.duplicateUsageRecords)} · ${number(group.duplicateUsageRecords)} duplicate`
+        : number(group.records),
       group.cacheReadObservedRecords > 0
         ? `${percent(group.cachedTokens / Math.max(1, group.cacheReadObservedInputTokens))} · ${number(group.cacheReadObservedRecords)}/${number(group.records)} rows`
         : "Not reported",
@@ -2777,6 +3215,9 @@ function reportMarkdown(report) {
     `Recurring interval: ${intervalLabel(report.summary.periodicIntervalSeconds)}`,
     `Recurring observed cost: ${money(report.summary.periodicSpendCostUsd)}`,
     `Recurring projected daily cost: ${money(report.summary.periodicProjectedDailyCostUsd)}`,
+    `Exact duplicate usage records excluded: ${number(report.summary.duplicateUsageRecords)}`,
+    `Duplicate recorded cost excluded: ${money(report.summary.duplicateCostUsd)}`,
+    `Deduplicated usage records: ${number(report.summary.deduplicatedUsageRecords ?? report.source.recordCount)}`,
     `Replayed usage records: ${number(report.summary.replayedUsageRecords)}`,
     `Unique usage records: ${number(report.summary.uniqueUsageRecords)}`,
     `Replayed input tokens: ${number(report.summary.replayedInputTokens)}`,
@@ -2799,12 +3240,12 @@ function reportMarkdown(report) {
   lines.push(
     "## Cost groups",
     "",
-    "| Agent | Feature | Provider | Actual model | Status | Records | Cost USD |",
-    "| --- | --- | --- | --- | --- | ---: | ---: |"
+    "| Agent | Feature | Provider | Actual model | Status | Counted records | Duplicate rows | Cost USD |",
+    "| --- | --- | --- | --- | --- | ---: | ---: | ---: |"
   );
   for (const group of report.groups) {
     lines.push(
-      `| ${group.agent} | ${group.feature} | ${group.provider} | ${group.actualModel} | ${group.status} | ${group.records} | ${group.costUsd === null ? "unpriced" : group.costUsd} |`
+      `| ${group.agent} | ${group.feature} | ${group.provider} | ${group.actualModel} | ${group.status} | ${group.records - Number(group.duplicateUsageRecords || 0)} | ${Number(group.duplicateUsageRecords || 0)} | ${group.costUsd === null ? "unpriced" : group.costUsd} |`
     );
   }
   lines.push(
@@ -2828,6 +3269,8 @@ function reportCsv(report) {
     "tool_use_records",
     "unmetered_tool_use_records",
     "reasoning_token_records",
+    "duplicate_usage_records",
+    "duplicate_priced_records",
     "replayed_usage_records",
     "background_records",
     "blocking_wait_records",
@@ -2840,6 +3283,13 @@ function reportCsv(report) {
     "tool_use_prompt_tokens",
     "cached_tokens",
     "cache_write_tokens",
+    "duplicate_input_tokens",
+    "duplicate_output_tokens",
+    "duplicate_reasoning_tokens",
+    "duplicate_tool_use_prompt_tokens",
+    "duplicate_cached_tokens",
+    "duplicate_cache_write_tokens",
+    "duplicate_cost_usd",
     "replayed_input_tokens",
     "replayed_output_tokens",
     "replayed_reasoning_tokens",
@@ -2869,6 +3319,8 @@ function reportCsv(report) {
       group.toolUseRecords,
       group.unmeteredToolUseRecords,
       group.reasoningTokenRecords,
+      group.duplicateUsageRecords,
+      group.duplicatePricedRecords,
       group.replayedUsageRecords,
       group.backgroundRecords,
       group.blockingWaitRecords,
@@ -2881,6 +3333,13 @@ function reportCsv(report) {
       group.toolUsePromptTokens,
       group.cachedTokens,
       group.cacheWriteTokens,
+      group.duplicateInputTokens,
+      group.duplicateOutputTokens,
+      group.duplicateReasoningTokens,
+      group.duplicateToolUsePromptTokens,
+      group.duplicateCachedTokens,
+      group.duplicateCacheWriteTokens,
+      group.duplicateCostUsd,
       group.replayedInputTokens,
       group.replayedOutputTokens,
       group.replayedReasoningTokens,
@@ -3079,11 +3538,17 @@ function initializeTool() {
   const fileInput = document.getElementById("usage-file");
   const directoryInput = document.getElementById("codex-directory");
   const directoryControl = document.getElementById("codex-directory-control");
+  const fileControl = document.getElementById("usage-file-control");
+  const fileButtonLabel = document.getElementById("file-button-label");
+  const directoryButtonLabel = document.getElementById("directory-button-label");
   const sessionControl = document.getElementById("codex-session-control");
   const sessionFilter = document.getElementById("codex-session-filter");
   const dropZone = document.getElementById("usage-drop-zone");
   const dropTitle = document.getElementById("drop-title");
   const dropSubtitle = document.getElementById("drop-subtitle");
+  const sourceLocationLabel = document.getElementById("source-location-label");
+  const sourceLocation = document.getElementById("source-location");
+  const sourceLocationHint = document.getElementById("source-location-hint");
   const platformInputs = [...document.querySelectorAll('input[name="usage-platform"]')];
   const textarea = document.getElementById("usage-text");
   const error = document.getElementById("audit-error");
@@ -3111,32 +3576,64 @@ function initializeTool() {
 
   const platformCopy = {
     codex: {
-      title: "Select Codex rollout data",
-      subtitle: "The newest compatible files are selected within the local 2 GB streaming limit."
+      title: "2. Choose your Codex usage folder",
+      subtitle: "Compatible records are found automatically and never leave this browser.",
+      locationLabel: "Usually stored here",
+      location: "~/.codex/sessions",
+      locationHint: "Mac: press Cmd+Shift+G in the folder picker and paste this path. Windows: use %USERPROFILE%\\.codex\\sessions.",
+      fileLabel: "Choose individual files instead",
+      directoryLabel: "Choose Codex usage folder"
     },
     "claude-code": {
-      title: "Select Claude Code session data",
-      subtitle: "Choose a .claude/projects folder or session JSONL; duplicate response fragments are counted once."
+      title: "2. Choose your Claude Code usage folder",
+      subtitle: "Compatible records are found automatically and never leave this browser.",
+      locationLabel: "Usually stored here",
+      location: "~/.claude/projects",
+      locationHint: "Mac: press Cmd+Shift+G in the folder picker and paste this path. Windows: use %USERPROFILE%\\.claude\\projects.",
+      fileLabel: "Choose individual files instead",
+      directoryLabel: "Choose Claude Code usage folder"
     },
     openclaw: {
-      title: "Select an OpenClaw transcript",
-      subtitle: "Session JSONL stays in this browser."
+      title: "2. Choose the affected OpenClaw session",
+      subtitle: "Pick the session from when the unexpected model or cost appeared.",
+      locationLabel: "Choose this file type",
+      location: "session transcript (.jsonl)",
+      locationHint: "The transcript is read on this device and is never uploaded.",
+      fileLabel: "Choose OpenClaw session",
+      directoryLabel: ""
     },
     gemini: {
-      title: "Select a Gemini usage export",
-      subtitle: "JSON, JSONL, NDJSON, CSV, and TSV are accepted."
+      title: "2. Choose your Gemini usage export",
+      subtitle: "Pick the file downloaded from the Gemini billing or usage page.",
+      locationLabel: "Choose this file type",
+      location: "usage export (.json or .csv)",
+      locationHint: "The export is read on this device and is never uploaded.",
+      fileLabel: "Choose Gemini export",
+      directoryLabel: ""
     },
     other: {
-      title: "Select a provider or gateway export",
-      subtitle: "JSON, JSONL, NDJSON, CSV, and TSV are accepted."
+      title: "2. Choose your usage export",
+      subtitle: "Pick the file downloaded from the AI provider or gateway.",
+      locationLabel: "Choose this file type",
+      location: "usage export (.json or .csv)",
+      locationHint: "The export is read on this device and is never uploaded.",
+      fileLabel: "Choose JSON or CSV",
+      directoryLabel: ""
     }
   };
 
-  const resetFileSelection = (message = "No files selected · files never leave this browser") => {
+  const updateAuditButton = () => {
+    const hasInput = selectedFiles.length > 0 || Boolean(textarea.value.trim());
+    auditButton.disabled = !hasInput;
+    auditButton.textContent = hasInput ? "Find what used my credits" : "Choose usage history to continue";
+  };
+
+  const resetFileSelection = (message = "No usage history selected yet") => {
     selectedFiles = [];
     fileInput.value = "";
     directoryInput.value = "";
     selected.textContent = message;
+    updateAuditButton();
   };
 
   const setFileSelection = (files) => {
@@ -3146,7 +3643,9 @@ function initializeTool() {
       ? `${selectedFiles[0].name} · ${byteSize(totalBytes)}`
       : selectedFiles.length > 1
         ? `${number(selectedFiles.length)} files · ${byteSize(totalBytes)} combined`
-        : "No files selected · files never leave this browser";
+        : "Nothing selected";
+    if (selectedFiles.length) dispatchEngagement("audit_input_selected");
+    updateAuditButton();
   };
 
   const setPlatform = (platform) => {
@@ -3154,7 +3653,15 @@ function initializeTool() {
     const copy = platformCopy[platform] || platformCopy.other;
     dropTitle.textContent = copy.title;
     dropSubtitle.textContent = copy.subtitle;
-    directoryControl.hidden = !["codex", "claude-code"].includes(platform);
+    sourceLocationLabel.textContent = copy.locationLabel;
+    sourceLocation.textContent = copy.location;
+    sourceLocationHint.textContent = copy.locationHint;
+    fileButtonLabel.textContent = copy.fileLabel;
+    directoryButtonLabel.textContent = copy.directoryLabel;
+    const supportsDirectory = ["codex", "claude-code"].includes(platform);
+    directoryControl.hidden = !supportsDirectory;
+    directoryControl.classList.toggle("primary-file-button", supportsDirectory);
+    fileControl.classList.toggle("primary-file-button", !supportsDirectory);
     sessionControl.hidden = platform !== "codex";
     resetFileSelection();
     error.hidden = true;
@@ -3166,13 +3673,13 @@ function initializeTool() {
   });
 
   textarea.addEventListener("input", () => {
-    if (
-      !selectedFiles.length &&
-      syntheticSampleText &&
-      textarea.value !== syntheticSampleText
-    ) {
-      selected.textContent = "Pasted records · stay in this browser";
-    }
+    if (selectedFiles.length || textarea.value === syntheticSampleText) return;
+    const hasPastedRecords = Boolean(textarea.value.trim());
+    selected.textContent = hasPastedRecords
+      ? "Pasted records · stay in this browser"
+      : "Nothing selected";
+    if (hasPastedRecords) dispatchEngagement("audit_input_selected");
+    updateAuditButton();
   });
 
   const selectDirectoryFiles = () => {
@@ -3193,6 +3700,7 @@ function initializeTool() {
         ? "The selected folder does not contain a rollout whose path or filename includes that session ID."
         : `Choose a ${isClaudeCode ? "Claude Code .claude/projects" : "Codex sessions"} folder containing non-empty .jsonl or .ndjson files.`;
       error.hidden = false;
+      updateAuditButton();
       return;
     }
     const matchText = hint
@@ -3200,6 +3708,8 @@ function initializeTool() {
       : `${number(selectedFiles.length)} newest ${isClaudeCode ? "Claude Code session" : "Codex rollout"} files`;
     selected.textContent = `${matchText} · ${byteSize(selection.totalBytes)}${skippedCount ? ` · ${number(skippedCount)} older, unsupported, empty, or large files skipped` : ""}`;
     error.hidden = true;
+    dispatchEngagement("audit_input_selected");
+    updateAuditButton();
   };
 
   directoryInput.addEventListener("change", selectDirectoryFiles);
@@ -3249,6 +3759,11 @@ function initializeTool() {
     auditButton.textContent = selectedFiles.length
       ? "Scanning local files..."
       : "Analyzing records...";
+    const source = (
+      !selectedFiles.length && syntheticSampleText && textarea.value === syntheticSampleText
+    ) ? "campaign_preview" : "user";
+    const policy = resolveAuditRunPolicy(source);
+    if (policy.trackJourney) dispatchEngagement("audit_started");
     try {
       const files = selectedFiles;
       if (files.length > MAX_SOURCE_FILES) {
@@ -3258,21 +3773,18 @@ function initializeTool() {
       if (totalFileBytes > MAX_CODEX_STREAM_BYTES) {
         throw new Error("The combined local session streaming limit is 2 GB.");
       }
-      const source = (
-        !files.length && syntheticSampleText && textarea.value === syntheticSampleText
-      ) ? "campaign_preview" : "user";
-      const policy = resolveAuditRunPolicy(source);
       currentAudit = files.length
         ? await parseCostUsageFiles(files)
         : parseCostUsageText(textarea.value);
       currentAuditCanCheckout = policy.allowCheckout;
       renderLocalAudit(currentAudit, policy);
     } catch (caught) {
+      if (policy.trackJourney) dispatchEngagement("audit_failed");
       error.textContent = caught.message;
       error.hidden = false;
     } finally {
-      auditButton.disabled = false;
       auditButton.textContent = originalButtonText;
+      updateAuditButton();
     }
   });
 
@@ -3289,8 +3801,8 @@ function initializeTool() {
     textarea.value = syntheticSampleText;
     resetFileSelection(
       source === "campaign_preview"
-        ? "Public incident preview loaded · synthetic data"
-        : "Redacted example loaded · synthetic data"
+        ? "Public incident example loaded · synthetic data"
+        : "Example answer loaded · synthetic data"
     );
     currentAudit = parseCostUsageText(syntheticSampleText);
     currentAuditCanCheckout = policy.allowCheckout;
@@ -3304,9 +3816,9 @@ function initializeTool() {
     currentAudit = null;
     currentAuditCanCheckout = false;
     syntheticSampleText = "";
+    textarea.value = "";
     resetFileSelection();
     sessionFilter.value = "";
-    textarea.value = "";
     resetAuditUi(document);
     error.hidden = true;
     history.replaceState(null, "", buildClearedAuditLocation(window.location.href));
